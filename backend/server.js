@@ -6,21 +6,10 @@ const admin = require("firebase-admin");
 
 const app = express();
 
-/* ================= CORS FIX ================= */
+/* ================= CORS (FULL FIX FOR NOW) ================= */
 
-const corsOptions = {
-  origin: [
-    "http://127.0.0.1:5501",
-    "http://localhost:5500",
-    "http://localhost:5501"
-  ],
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-  allowedHeaders: ["Content-Type"],
-  credentials: true
-};
-
-app.use(cors(corsOptions));
-app.options("*", cors(corsOptions));
+app.use(cors());
+app.options("*", cors());
 
 app.use(express.json());
 
@@ -115,7 +104,7 @@ app.post("/create-order", async (req, res) => {
 
     res.json({
       order,
-      key: process.env.RAZORPAY_KEY_ID
+      key: process.env.RAZORPAY_KEY_ID,
     });
 
   } catch (err) {
@@ -149,30 +138,6 @@ app.post("/verify-payment", async (req, res) => {
       return res.status(400).json({ success: false, error: "Invalid signature" });
     }
 
-    if (paymentType === "advance") {
-      const tempSnap = await db.ref("tempBookings/" + bookingId).once("value");
-      const tempData = tempSnap.val();
-
-      if (!tempData) {
-        return res.status(404).json({ error: "Temp booking not found" });
-      }
-
-      const finalBookingId = "IMP" + Date.now();
-
-      const bookingObject = {
-        ...tempData,
-        bookingID: finalBookingId,
-        paidAdvance: true,
-        status: "advance_paid",
-        razorpay_payment_id,
-      };
-
-      await db.ref("bookings/" + finalBookingId).set(bookingObject);
-      await db.ref("tempBookings/" + bookingId).remove();
-
-      return res.json({ success: true });
-    }
-
     const updates = { razorpay_payment_id };
 
     if (paymentType === "mid") {
@@ -183,6 +148,7 @@ app.post("/verify-payment", async (req, res) => {
     if (paymentType === "final") {
       updates.paidFinal = true;
       updates.status = "completed";
+      updates.finalPaidDate = Date.now();
     }
 
     await db.ref("bookings/" + bookingId).update(updates);
