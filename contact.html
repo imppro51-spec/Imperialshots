@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact Us – Imperial Shots</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="contact.css">
+<link rel="stylesheet" href="sidebar-user.css"
+<link rel="stylesheet" href="app-mobile.css"
+
+<!-- Firebase SDKs -->
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+
+
+<script src="sidebar-user.js"></script>
+
+<!-- Firebase + Forms connection -->
+<script src="firebase.js"></script>
+
+<link rel="stylesheet" href="app-mobile.css" media="(max-width:768px)">
+
+</head>
+<body>
+<header>
+  <div class="nav">
+    <div class="logo">
+      <img src="original.png" alt="Logo">
+    </div>
+
+   
+    <button class="btn quote-btn">Get A Quote</button>
+  </div>
+
+</header>
+<!-- ===== VERTICAL SIDEBAR ===== -->
+<div class="v-sidebar">
+
+  <!-- TOP LOGO + ICON -->
+  <div class="v-top">
+    <img src="original.png" alt="Imperial Shots" class="v-logo">
+    <i class="fa-solid fa-bars"></i>
+  </div>
+
+  <!-- MENU -->
+  <ul class="v-menu">
+
+  <li>
+    <a href="index.html">
+      <i class="fa-solid fa-house"></i>
+      <span>Home</span>
+    </a>
+  </li>
+
+  <li>
+    <a href="portfolio.html">
+      <i class="fa-solid fa-film"></i>
+      <span>Portfolio</span>
+    </a>
+  </li>
+
+  <li>
+    <a href="packages.html">
+      <i class="fa-solid fa-box-open"></i>
+      <span>Packages</span>
+    </a>
+  </li>
+
+  <!-- ✅ My Bookings -->
+  <li>
+    <a href="mybookings.html">
+      <i class="fa-solid fa-calendar-check"></i>
+      <span>My Bookings</span>
+    </a>
+  </li>
+
+  
+
+  <!-- ✅ Profile -->
+  <li>
+    <a href="profile.html">
+      <i class="fa-solid fa-user"></i>
+      <span>Profile</span>
+    </a>
+  </li>
+
+  <!-- ✅ Sign Up -->
+  <li>
+    <a href="login.html">
+      <i class="fa-solid fa-user-plus"></i>
+      <span>Sign Up</span>
+    </a>
+  </li>
+
+  <!-- ✅ Contact -->
+  <li>
+    <a href="contact.html">
+      <i class="fa-solid fa-envelope"></i>
+      <span>Contact</span>
+    </a>
+  </li>
+<li>
+    <a href="/vendor system 2.0/index.html">
+      <i class="fa-solid fa-user-tie"></i>
+      <span>Vendor</span>
+    </a>
+  </li>
+</ul>
+
+
+  <!-- USER -->
+  <div class="v-user" onclick="location.href='profile.html'">
+    <div class="v-avatar" id="userAvatar">U</div>
+    <div class="v-userinfo">
+      <span class="v-name" id="sidebarName">Guest</span>
+      <span class="v-email" id="sidebarEmail">Login required</span>
+    </div>
+  </div>
+
+</div>
+
+
+
+<section class="contact">
+  <!-- Enquiry Form -->
+  <section class="contact">
+  <div class="form">
+    <h3>Send Enquiry</h3>
+    <form id="enquiryForm">
+
+      <!-- First & Last Name -->
+      <div class="form-row">
+        <input type="text" id="fname" placeholder="First Name" required>
+        <input type="text" id="lname" placeholder="Last Name" required>
+      </div>
+
+      <!-- Phone -->
+      <input type="tel" id="phone" placeholder="Phone Number" required>
+      <input type="tel" id="altPhone" placeholder="Alternate Phone">
+
+      <!-- Event Type -->
+      <select id="eventType" required>
+        <option value="">Select Event Type</option>
+        <option>Wedding</option>
+        <option>Pre-Wedding</option>
+        <option>Reels</option>
+        <option>Ads</option>
+        <option>Photoshoot</option>
+      </select>
+
+      <!-- Event Date -->
+      <input type="date" id="eventDate" required>
+
+      <!-- Address & Pincode -->
+      <input type="text" id="address" placeholder="Event Address" required>
+      <input type="text" id="pincode" placeholder="Pincode" required>
+
+      <!-- Captcha -->
+      <label class="captcha">
+        <input type="checkbox" id="captcha" required> I'm not a robot
+      </label>
+
+      <button type="submit" class="btn">Submit Enquiry</button>
+    </form>
+  </div>
+
+  <div class="info">
+    <h3>Get In Touch</h3>
+    <p>📍 Sikar / Jaipur</p>
+    <p>📞 9772-509-456</p>
+    <p>📧 imperialshots@gmail.com</p>
+    <p style="margin-top:20px">Available for weddings, pre-weddings & commercial shoots.</p>
+  </div>
+</section>
+<script type="module" src="enquiry.js"></script>
+
+
+<footer class="site-footer">
+  <div class="footer-container">
+
+    <!-- BRAND -->
+     <div class="footer-box footer-brand">
+  <img src="original.png" alt="Imperial Shots Logo" class="footer-logo-img">
+
+  <p>
+    Premium wedding & pre-wedding cinematography capturing timeless
+    emotions with a cinematic touch.
+  </p>
+      <div class="social">
+        <a href="https://www.instagram.com/officialimperialshots" target="_blank" aria-label="Instagram">
+          <i class="fab fa-instagram"></i>
+        </a>
+        <a href="https://www.facebook.com/officialimperialshots" target="_blank" aria-label="Facebook">
+          <i class="fab fa-facebook-f"></i>
+        </a>
+      </div>
+    </div>
+
+    <!-- QUICK LINKS -->
+    <div class="footer-box">
+      <h4>Quick Links</h4>
+      <ul>
+          <li><a href="privacy-policy.html">Privacy Policy</a></li>
+          <li><a href="terms&condition-policy.html">Terms & Conditions</a></li>
+          <li><a href="faqs.html">FAQs</a></li>
+          <li><a href="helpandsupport.html">Help & Support</a></li>
+           <li><a href="service-agreement.html">Service-Agreement-Policy</a></li>
+            <li><a href="payment-policy.html">Payments-policy</a></li>
+        </ul>
+    </div>
+
+    <!-- CONTACT -->
+    <div class="footer-box">
+      <h4>Contact Info</h4>
+      <p>📍 Sikar, Rajasthan, India</p>
+      <p>📧 imperialshots@gmail.com</p>
+      <p>📞 +91 97725 09456</p>
+    </div>
+
+  </div>
+
+  <div class="footer-bottom">
+    © 2026 Imperial Shots. All Rights Reserved.
+  </div>
+</footer>
+
+
+
+<script type="module" src="firebase.js"></script>
+<script type="module" src="booking.js"></script>
+<!-- ================= QUOTE MODAL ================= -->
+<div id="quoteModal" class="modal">
+  <div class="modal-box">
+    <span class="close" id="closeQuote">&times;</span>
+    <h2>Get A Quote</h2>
+
+    <form id="quoteForm">
+
+      <!-- Name -->
+      <div class="form-row">
+        <input type="text" id="qfname" placeholder="First Name" required>
+        <input type="text" id="qlname" placeholder="Last Name" required>
+      </div>
+
+      <!-- Phone -->
+      <input type="tel" id="qphone" placeholder="Phone Number" required>
+
+      <input type="tel" id="qaltphone" placeholder="Alternate Phone">
+
+      <!-- Email -->
+      <input type="email" id="qemail" placeholder="Email Address" required>
+
+      <!-- Package -->
+      <select id="qpackage" required>
+        <option value="">Select Package</option>
+        <option>Basic</option>
+        <option>Standard</option>
+        <option>Premium</option>
+        <option>Custom</option>
+      </select>
+
+      <!-- Event Type -->
+      <select id="qeventType" required>
+        <option value="">Select Event Type</option>
+        <option>Wedding</option>
+        <option>Pre-Wedding</option>
+        <option>Reels</option>
+        <option>Ads</option>
+        <option>Photoshoot</option>
+      </select>
+
+      <!-- Date -->
+      <input type="date" id="qeventDate" required>
+
+      <!-- Address -->
+      <input type="text" id="qaddress" placeholder="Full Address" required>
+
+      <!-- City -->
+      <input type="text" id="qcity" placeholder="Event City / Location" required>
+
+      <!-- Pincode -->
+      <input type="text" id="qpincode" placeholder="Pincode" required>
+
+      <!-- Message -->
+      <textarea id="qmessage" placeholder="Your Message"></textarea>
+
+      <!-- Captcha -->
+      <label class="captcha">
+        <input type="checkbox" id="qcaptcha" required>
+        I'm not a robot
+      </label>
+
+      <!-- Submit -->
+      <button type="submit" class="btn">Request Quote</button>
+
+    </form>
+
+  </div>
+</div>
+<script src="quote.js"></script>
+</div>
+<script type="module" src="contact.js"></script>
+<script src="mobile-menu.js"></script>
+<script src="auth-check.js"></script>
+</body>
+</html>

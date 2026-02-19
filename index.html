@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Imperial Shots – Cinematic Wedding Films</title>
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <!-- Icons -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="index.css">
+  <link rel="stylesheet" href="sidebar-user.css">
+  <link rel="stylesheet" href="indexapp.css">
+
+  <!-- Firebase SDKs -->
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+
+
+
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#111111">
+<link rel="apple-touch-icon" href="/icon-192.png">
+
+
+
+<link rel="stylesheet" href="indexapp.css" media="(max-width:768px)">
+
+
+<!-- Firebase + Forms connection -->
+<script src="firebase.js"></script>
+
+</head>
+
+<body>
+
+  <header>
+  <div class="nav">
+    <div class="logo">
+      <img src="original.png" alt="Logo">
+    </div>
+
+    
+
+    
+
+    <button class="btn quote-btn">Get A Quote</button>
+  </div>
+
+  <!-- Mobile Menu (hidden initially) -->
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="index.html">Home</a>
+    <a href="wedding.html">Weddings</a>
+    <a href="prewedding.html">Pre-Weddings</a>
+    <a href="portfolio.html">Portfolio</a>
+    <a href="packages.html">Packages</a>
+    <a href="contact.html">Contact</a>
+    <a href="login.html">Signup</a>
+    <a href="mybookings.html">My Bookings</a>
+
+
+
+<div class="app-container">
+  <header class="app-header">
+    Imperial Shots
+  </header>
+
+  <main class="app-main" id="packagesContainer">
+    <!-- JS will inject packages here -->
+  </main>
+
+  
+
+
+
+
+
+    
+
+
+
+
+
+  </div>
+</header>
+<!-- ===== VERTICAL SIDEBAR ===== -->
+<div class="v-sidebar">
+
+  <!-- TOP LOGO + ICON -->
+  <div class="v-top">
+    <img src="original.png" alt="Imperial Shots" class="v-logo">
+    <i class="fa-solid fa-bars" id="sidebarToggle"></i>
+  </div>
+
+  <!-- MENU -->
+ <ul class="v-menu">
+
+  <li>
+    <a href="index.html">
+      <i class="fa-solid fa-house"></i>
+      <span>Home</span>
+    </a>
+  </li>
+
+  <li>
+    <a href="portfolio.html">
+      <i class="fa-solid fa-film"></i>
+      <span>Portfolio</span>
+    </a>
+  </li>
+
+  <li>
+    <a href="packages.html">
+      <i class="fa-solid fa-box-open"></i>
+      <span>Packages</span>
+    </a>
+  </li>
+
+  <!-- ✅ My Bookings -->
+  <li>
+    <a href="mybookings.html">
+      <i class="fa-solid fa-calendar-check"></i>
+      <span>My Bookings</span>
+    </a>
+  </li>
+
+
+
+  <!-- ✅ Profile -->
+  <li>
+    <a href="profile.html">
+      <i class="fa-solid fa-user"></i>
+      <span>Profile</span>
+    </a>
+  </li>
+
+  <!-- ✅ Sign Up -->
+  <li>
+    <a href="login.html">
+      <i class="fa-solid fa-user-plus"></i>
+      <span>Sign Up</span>
+    </a>
+  </li>
+
+  <!-- ✅ Contact -->
+  <li>
+    <a href="contact.html">
+      <i class="fa-solid fa-envelope"></i>
+      <span>Contact</span>
+    </a>
+  </li>
+ <li>
+    <a href="/vendor system 2.0/index.html">
+      <i class="fa-solid fa-user-tie"></i>
+      <span>Vendor</span>
+    </a>
+  </li>
+</ul>
+
+  <!-- USER INFO -->
+  <div class="v-user" onclick="location.href='profile.html'">
+    <div class="v-avatar" id="userAvatar">U</div>
+    <div class="v-userinfo">
+      <span class="v-name" id="sidebarName">Guest</span>
+      <span class="v-email" id="sidebarEmail">Login required</span>
+    </div>
+  </div>
+</div>
+
+
+  <!-- ===== MAIN BANNER SLIDER ===== -->
+<section class="app-slider" id="heroSection">
+
+  <div class="slider-track">
+
+    <!-- Slide 1 -->
+    <a href="packages.html" class="slide active">
+      <img src="banner1.jpeg" alt="Banner 1">
+      <div class="slide-content">
+        <h1>Your Dream Wedding</h1>
+        <p>Capturing Memories Cinematically</p>
+        <button>View Portfolio</button>
+      </div>
+    </a>
+
+    <!-- Slide 2 -->
+    <a href="packages.html" class="slide">
+      <img src="banner2.jpeg" alt="Banner 2">
+      <div class="slide-content">
+        <h1>Pre Wedding Shoots</h1>
+        <p>Make Love Stories Cinematic</p>
+      </div>
+    </a>
+
+    <!-- Slide 3 -->
+    <a href="packages.html" class="slide">
+      <img src="banner3.png" alt="Banner 3">
+      <div class="slide-content">
+        <h1>Premium Films</h1>
+        <p>Professional Wedding Coverage</p>
+      </div>
+    </a>
+
+  </div>
+
+  <div class="slider-dots"></div>
+
+</section>
+
+
+
+
+
+
+
+<div class="auth-area">
+  <!-- Show when NOT logged in -->
+  <a href="login.html" id="signupBtn" class="header-btn">Sign Up</a>
+
+  <!-- Show when logged in -->
+  <div id="profileBox" class="profile-box" style="display:none;">
+    <img src="user.png" class="profile-img">
+    <span id="userEmail"></span>
+    <button id="logoutBtn">Logout</button>
+  </div>
+</div>
+
+
+  <section class="features reveal">
+    <div class="feature-grid">
+      <div class="feature"><i class="fa-solid fa-video"></i>
+        <h4>Cinematic Videography</h4>
+      </div>
+      <div class="feature"><i class="fa-solid fa-camera"></i>
+        <h4>Pre‑Wedding Shoots</h4>
+      </div>
+      <div class="feature"><i class="fa-solid fa-play"></i>
+        <h4>Reels & Short Films</h4>
+      </div>
+      <div class="feature"><i class="fa-solid fa-building"></i>
+        <h4>Professional Ads</h4>
+      </div>
+    </div>
+  </section>
+
+  <section class="about reveal">
+    <div class="about-box">
+      <h3>About <span>Imperial Shots</span></h3>
+      <p>Based in Sikar & Jaipur, we craft timeless wedding films with passion, creativity and emotion.</p>
+
+      <button class="btn Enquary-btn" onclick="openEnquiry('Wedding')">Enquiry</button>
+
+    </div>
+    <img src="wedding film.png" alt="about">
+  </section>
+
+  <section class="services reveal">
+    <h2>Our Services</h2>
+    <div class="service-grid">
+      <div class="card"><img src="wedding.jpg">
+        <h4>Wedding Films</h4>
+      </div>
+      <div class="card"><img src="prewedding.jpg">
+        <h4>Pre‑Wedding Shoots</h4>
+      </div>
+      <div class="card"><img src="reels.jpg">
+        <h4>Reels & Short Films</h4>
+      </div>
+      <div class="card"><img src="sahil.webp">
+        <h4>Commercial Ads</h4>
+      </div>
+    </div>
+  </section>
+
+  <section class="contact reveal">
+    <div></div>
+
+    <div class="contact-form">
+      <h3>Get in Touch</h3>
+
+      <form id="contactForm">
+
+        <input type="text" id="cname" placeholder="Full Name" required>
+
+        <input type="tel" id="cphone" placeholder="Contact Number" required>
+
+        <select id="ceventType" required>
+          <option value="">Select Event Type</option>
+          <option>Wedding</option>
+          <option>Pre-Wedding</option>
+          <option>Reels</option>
+          <option>Photoshoot</option>
+          <option>Ads</option>
+        </select>
+
+        <input type="date" id="ceventDate" required>
+
+        <button type="submit" class="btn">
+          Submit
+        </button>
+
+      </form>
+
+      <p style="margin-top:12px">
+        
+      </p>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="footer-container">
+
+
+
+      <!-- BRAND -->
+      <div class="footer-box footer-brand">
+        <img src="original.png" alt="Imperial Shots Logo" class="footer-logo-img">
+
+        <p>
+          Premium wedding & pre-wedding cinematography capturing timeless
+          emotions with a cinematic touch.
+        </p>
+        <div class="social">
+          <a href="https://www.instagram.com/officialimperialshots" target="_blank" aria-label="Instagram">
+            <i class="fab fa-instagram"></i>
+          </a>
+          <a href="https://www.facebook.com/officialimperialshots" target="_blank" aria-label="Facebook">
+            <i class="fab fa-facebook-f"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- QUICK LINKS -->
+      <div class="footer-box">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="privacy-policy.html">Privacy Policy</a></li>
+          <li><a href="terms&condition-policy.html">Terms & Conditions</a></li>
+          <li><a href="faqs.html">FAQs</a></li>
+          <li><a href="helpandsupport.html">Help & Support</a></li>
+           <li><a href="service-agreement.html">Service-Agreement-Policy</a></li>
+            <li><a href="payment-policy.html">Payments-policy</a></li>
+        </ul>
+      </div>
+
+      <!-- CONTACT -->
+      <div class="footer-box">
+        <h4>Contact Info</h4>
+        <p>📍 Sikar, Rajasthan, India</p>
+        <p>📧 imperialshots@gmail.com</p>
+        <p>📞 +91 97725 09456</p>
+      </div>
+
+    </div>
+
+    <div class="footer-bottom">
+      © 2026 Imperial Shots. All Rights Reserved.
+    </div>
+  </footer>
+
+
+  <script>
+    const reveals = document.querySelectorAll('.reveal');
+    window.addEventListener('scroll', () => {
+      reveals.forEach(el => {
+        const top = el.getBoundingClientRect().top;
+        if (top < window.innerHeight - 100) { el.classList.add('active') }
+      })
+    })
+  </script>
+  <!-- PAGE CONTENT ABOVE -->
+
+  
+
+  <!-- ===== ENQUIRY MODAL ===== -->
+<div id="enquiryModal" class="modal">
+  <div class="modal-box">
+    <span class="close" onclick="closeEnquiry()">×</span>
+    <h2>Send Enquiry</h2>
+    <form id="enquiryForm">
+      <div class="form-row">
+        <input type="text" id="fname" placeholder="First Name" required>
+        <input type="text" id="lname" placeholder="Last Name" required>
+      </div>
+      <input type="tel" id="phone" placeholder="Phone Number" required>
+      <input type="tel" id="altPhone" placeholder="Alternate Phone">
+      <select id="eventType" required>
+        <option value="">Select Event Type</option>
+        <option>Wedding</option>
+        <option>Pre-Wedding</option>
+        <option>Reels</option>
+        <option>Ads</option>
+        <option>Photoshoot</option>
+      </select>
+      <input type="date" id="eventDate" required>
+      <input type="text" id="address" placeholder="Event Address" required>
+      <input type="text" id="pincode" placeholder="Pincode" required>
+      <label class="captcha">
+        <input type="checkbox" id="captcha" required> I'm not a robot
+      </label>
+      <button type="submit" class="btn">Submit Enquiry</button>
+    </form>
+  </div>
+</div>
+  <!-- JS FILE -->
+  <script src="enquary.js"></script>
+</body>
+
+
+
+<!-- ================= QUOTE MODAL ================= -->
+<!-- ================= QUOTE MODAL ================= -->
+<div id="quoteModal" class="modal">
+  <div class="modal-box">
+    <span class="close" id="closeQuote">&times;</span>
+    <h2>Get A Quote</h2>
+    <form id="quoteForm">
+      <div class="form-row">
+        <input type="text" id="qfname" placeholder="First Name" required>
+        <input type="text" id="qlname" placeholder="Last Name" required>
+      </div>
+      
+      <input type="email" id="qemail" placeholder="Email" required>
+      <input type="tel" id="qphone" placeholder="Phone Number" required>
+      <input type="tel" id="qaltphone" placeholder="Alternate Phone">
+      
+      <input type="text" id="qpackage" placeholder="Package / Plan">
+      
+      <select id="qeventType" required>
+        <option value="">Select Event Type</option>
+        <option>Wedding</option>
+        <option>Pre-Wedding</option>
+        <option>Reels</option>
+        <option>Ads</option>
+        <option>Photoshoot</option>
+      </select>
+      
+      <input type="date" id="qeventDate" required>
+      <input type="text" id="qaddress" placeholder="Event Address">
+      <input type="text" id="qcity" placeholder="Event City / Location" required>
+      <input type="text" id="qpincode" placeholder="Pincode">
+      
+      <textarea id="qmessage" placeholder="Your Message"></textarea>
+      
+      <label class="captcha">
+        <input type="checkbox" id="qcaptcha" required> I'm not a robot
+      </label>
+      
+      <button type="submit" class="btn">Request Quote</button>
+    </form>
+  </div>
+</div>
+
+
+<script src="quote.js"></script>
+<script type="module" src="contact.js"></script>
+<script src="mobile-menu.js"></script>
+<script src="auth-check.js"></script>
+
+<script>// 🔹 Firebase config
+    const firebaseConfig = {
+      apiKey: "AIzaSyAvfmCKZQGxWdNUyqySV5IPk8DiFU4F23U",
+      authDomain: "imperialshots-d468c.firebaseapp.com",
+      databaseURL: "https://imperialshots-d468c-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "imperialshots-d468c"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+    const heroSection = document.getElementById("heroSection");
+
+    // Fetch banner URL from Firebase
+    onValue(ref(db, "website/banner"), snapshot => {
+      const url = snapshot.val();
+      if(url) {
+        heroSection.style.background = `url('${url}') center center / cover no-repeat`;
+      }
+    });
+  </script>
+
+
+<script>
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("sw.js")
+  .then(()=>console.log("Service Worker Registered"));
+}
+</script>
+<button onclick="installApp()">Install App</button>
+<script>
+let deferredPrompt;
+
+window.addEventListener("beforeinstallprompt", e => {
+  e.preventDefault();
+  deferredPrompt = e;
+});
+
+function installApp(){
+  if(deferredPrompt){
+    deferredPrompt.prompt();
+  }
+}
+</script>
+
+
+<div class="app-bottom">
+  <a href="index.html" class="active">
+    <i class="fa fa-home"></i>Home
+  </a>
+  <a href="packages.html">
+    <i class="fa fa-box"></i>Plans
+  </a>
+  <a href="portfolio.html">
+    <i class="fa fa-film"></i>Work
+  </a>
+  <a href="more.html">
+    <i class="fa fa-ellipsis-h"></i>More
+  </a>
+</div>
+
+<script>
+const track = document.querySelector(".slider-track");
+const slides = document.querySelectorAll(".slide");
+const dotsBox = document.querySelector(".slider-dots");
+
+let index = 0;
+let startX = 0;
+
+
+
+
+/* Create Dots */
+slides.forEach((_,i)=>{
+  const dot = document.createElement("span");
+  if(i===0) dot.classList.add("active");
+  dot.onclick = ()=>goSlide(i);
+  dotsBox.appendChild(dot);
+});
+
+const dots = document.querySelectorAll(".slider-dots span");
+
+function goSlide(i){
+  index = i;
+  track.style.transform = `translateX(-${i*100}%)`;
+
+  dots.forEach(d=>d.classList.remove("active"));
+  dots[i].classList.add("active");
+}
+
+/* Auto Slide */
+setInterval(()=>{
+  index = (index+1)%slides.length;
+  goSlide(index);
+},4000);
+
+
+/* Swipe Support (Mobile Like BookMyShow) */
+track.addEventListener("touchstart",e=>{
+  startX = e.touches[0].clientX;
+});
+
+track.addEventListener("touchend",e=>{
+  let endX = e.changedTouches[0].clientX;
+
+  if(startX - endX > 50){
+    index = (index+1)%slides.length;
+  }
+  else if(endX - startX > 50){
+    index = (index-1+slides.length)%slides.length;
+  }
+
+  goSlide(index);
+});
+</script>
+
+</body>
+
+</html>

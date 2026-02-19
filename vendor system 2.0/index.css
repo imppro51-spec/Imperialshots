@@ -1,0 +1,205 @@
+:root{
+  --gold:#d4af37;
+  --gold-dark:#b8962e;
+  --dark:#0f172a;
+  --white:#ffffff;
+  --gray:#cbd5e1;
+}
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body{
+  font-family:'Poppins',sans-serif;
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:
+    linear-gradient(rgba(0,0,0,.7), rgba(0,0,0,.7)),
+    url("hero-banner.jpg") center/cover no-repeat;
+  padding:40px 15px;
+}
+
+/* ================= MAIN CONTAINER ================= */
+
+.container{
+  width:100%;
+  max-width:600px;
+  background:rgba(255,255,255,.08);
+  backdrop-filter:blur(18px);
+  border-radius:22px;
+  padding:40px 35px;
+  box-shadow:0 30px 60px rgba(0,0,0,.45);
+  color:#fff;
+  animation:fadeIn .6s ease;
+}
+
+@keyframes fadeIn{
+  from{opacity:0; transform:translateY(20px);}
+  to{opacity:1; transform:translateY(0);}
+}
+
+.container h2{
+  text-align:center;
+  margin-bottom:25px;
+  font-weight:600;
+}
+
+.container h2::after{
+  content:"";
+  display:block;
+  width:60px;
+  height:3px;
+  background:var(--gold);
+  margin:12px auto 0;
+  border-radius:4px;
+}
+
+.container h3{
+  margin-bottom:15px;
+  font-size:16px;
+  font-weight:500;
+  color:var(--gray);
+}
+
+/* ================= FORM STEPS ================= */
+
+.form-step{
+  display:none;
+}
+
+.form-step.active{
+  display:block;
+  animation:slide .4s ease;
+}
+
+@keyframes slide{
+  from{opacity:0; transform:translateX(20px);}
+  to{opacity:1; transform:translateX(0);}
+}
+
+/* ================= INPUT ================= */
+
+.container input{
+  width:100%;
+  padding:13px 15px;
+  margin-bottom:14px;
+  border-radius:12px;
+  border:1px solid rgba(255,255,255,.25);
+  background:rgba(255,255,255,.12);
+  color:#fff;
+  font-size:14px;
+  outline:none;
+  transition:.3s ease;
+}
+
+.container input::placeholder{
+  color:#d1d5db;
+}
+
+.container input:focus{
+  border-color:var(--gold);
+  background:rgba(255,255,255,.18);
+}
+
+/* ================= BUTTONS ================= */
+
+button{
+  padding:12px 22px;
+  border:none;
+  border-radius:14px;
+  font-weight:600;
+  font-size:14px;
+  cursor:pointer;
+  margin-top:5px;
+  transition:.3s ease;
+}
+
+/* Primary Gold Button */
+button:not(.secondary){
+  background:linear-gradient(135deg,var(--gold),var(--gold-dark));
+  color:#000;
+  box-shadow:0 10px 30px rgba(212,175,55,.35);
+}
+
+button:not(.secondary):hover{
+  transform:translateY(-2px);
+  box-shadow:0 18px 45px rgba(212,175,55,.55);
+}
+
+/* Back Button */
+.secondary{
+  background:transparent;
+  border:1px solid var(--gold);
+  color:var(--gold);
+  margin-right:10px;
+}
+
+.secondary:hover{
+  background:var(--gold);
+  color:#000;
+}
+
+/* ================= SUCCESS MESSAGE ================= */
+
+#successMessage{
+  margin-top:18px;
+  padding:12px;
+  border-radius:10px;
+  text-align:center;
+  font-weight:500;
+  background:rgba(34,197,94,.15);
+  color:#4ade80;
+}
+
+.hidden{
+  display:none;
+}
+
+/* ================= STATUS SECTION ================= */
+
+hr{
+  margin:35px 0 25px;
+  border:none;
+  height:1px;
+  background:rgba(255,255,255,.15);
+}
+
+#statusResult{
+  margin-top:15px;
+  font-weight:500;
+}
+
+/* ================= MOBILE ================= */
+
+@media(max-width:480px){
+  .container{
+    padding:30px 22px;
+  }
+
+  button{
+    width:100%;
+    margin-top:10px;
+  }
+}
+.back-btn {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background: transparent;
+  border: none;
+  font-size: 26px;
+  cursor: pointer;
+  color: #333;
+}
+
+.back-btn:hover {
+  color: #000;
+}
+.container {
+  position: relative;
+}

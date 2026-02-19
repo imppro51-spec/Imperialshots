@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portfolio – Imperial Shots</title>
+
+  <!-- Fonts & Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="portfolio.css">
+  <link rel="stylesheet" href="sidebar-user.css">
+
+  
+
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+<link rel="stylesheet" href="portfolioapp.css">
+
+<link rel="stylesheet" href="portfolioapp.css" media="(max-width:768px)">
+
+<script src="sidebar-user.js"></script>
+
+</head>
+
+<body>
+
+  <header>
+    <div class="nav">
+      <div class="logo">
+        <img src="original.png" alt="Logo">
+      </div>
+
+      
+
+      <button class="btn quote-btn">Get A Quote</button>
+    </div>
+
+    
+  </header>
+<!-- ===== VERTICAL SIDEBAR ===== -->
+<div class="v-sidebar">
+
+  <!-- TOP LOGO + ICON -->
+  <div class="v-top">
+    <img src="original.png" alt="Imperial Shots" class="v-logo">
+    <i class="fa-solid fa-bars"></i>
+  </div>
+
+  <!-- MENU -->
+<ul class="v-menu">
+
+  <li>
+    <a href="index.html">
+      <i class="fa-solid fa-house"></i>
+      <span>Home</span>
+    </a>
+  </li>
+
+  <li>
+    <a href="portfolio.html">
+      <i class="fa-solid fa-film"></i>
+      <span>Portfolio</span>
+    </a>
+  </li>
+
+  <li>
+    <a href="packages.html">
+      <i class="fa-solid fa-box-open"></i>
+      <span>Packages</span>
+    </a>
+  </li>
+
+  <!-- ✅ My Bookings -->
+  <li>
+    <a href="mybookings.html">
+      <i class="fa-solid fa-calendar-check"></i>
+      <span>My Bookings</span>
+    </a>
+  </li>
+
+  
+
+  <!-- ✅ Profile -->
+  <li>
+    <a href="profile.html">
+      <i class="fa-solid fa-user"></i>
+      <span>Profile</span>
+    </a>
+  </li>
+
+  <!-- ✅ Sign Up -->
+  <li>
+    <a href="login.html">
+      <i class="fa-solid fa-user-plus"></i>
+      <span>Sign Up</span>
+    </a>
+  </li>
+
+  <!-- ✅ Contact -->
+  <li>
+    <a href="contact.html">
+      <i class="fa-solid fa-envelope"></i>
+      <span>Contact</span>
+    </a>
+  </li>
+<li>
+    <a href="/vendor system 2.0/index.html">
+      <i class="fa-solid fa-user-tie"></i>
+      <span>Vendor</span>
+    </a>
+  </li>
+</ul>
+
+
+  <!-- USER -->
+  <div class="v-user" onclick="location.href='profile.html'">
+    <div class="v-avatar" id="userAvatar">U</div>
+    <div class="v-userinfo">
+      <span class="v-name" id="sidebarName">Guest</span>
+      <span class="v-email" id="sidebarEmail">Login required</span>
+    </div>
+  </div>
+
+</div>
+
+  <section class="hero" id="heroSection" style="background: url() center center / cover no-repeat;"></section>
+  <div class="hero-content">
+    <div>
+      <h1>Our Portfolio</h1>
+      <p>A glimpse of our cinematic wedding films, pre-wedding stories and creative visuals.</p>
+    </div>
+  </div>
+  </section>
+
+  <!-- FILTERS -->
+  <section class="filters reveal">
+    <button class="filter-btn active" data-filter="all">All</button>
+    <button class="filter-btn" data-filter="wedding">Wedding</button>
+    <button class="filter-btn" data-filter="prewedding">Pre-Wedding</button>
+    <button class="filter-btn" data-filter="reels">Reels</button>
+    <button class="filter-btn" data-filter="ads">Ads</button>
+  </section>
+
+  <!-- PORTFOLIO GRID -->
+  <section class="grid portfolio-grid reveal">
+    <!-- Media cards will be injected here dynamically -->
+  </section>
+
+  <!-- CTA -->
+  <section class="cta reveal">
+    <h2>Let’s Create Something Beautiful</h2>
+    <p>Your story deserves a cinematic presentation.</p>
+    <button class="btn book-btn" data-event="Wedding">Book Your Shoot</button>
+  </section>
+
+
+  <!-- ================= QUOTE MODAL ================= -->
+  <div id="quoteModal" class="modal">
+    <div class="modal-box">
+      <span class="close" id="closeQuote">&times;</span>
+      <h2>Get A Quote</h2>
+
+      <form id="quoteForm">
+
+        <!-- Name -->
+        <div class="form-row">
+          <input type="text" id="qfname" placeholder="First Name" required>
+          <input type="text" id="qlname" placeholder="Last Name" required>
+        </div>
+
+        <!-- Phone -->
+        <input type="tel" id="qphone" placeholder="Phone Number" required>
+
+        <input type="tel" id="qaltphone" placeholder="Alternate Phone">
+
+        <!-- Email -->
+        <input type="email" id="qemail" placeholder="Email Address" required>
+
+        <!-- Package -->
+        <select id="qpackage" required>
+          <option value="">Select Package</option>
+          <option>Basic</option>
+          <option>Standard</option>
+          <option>Premium</option>
+          <option>Custom</option>
+        </select>
+
+        <!-- Event Type -->
+        <select id="qeventType" required>
+          <option value="">Select Event Type</option>
+          <option>Wedding</option>
+          <option>Pre-Wedding</option>
+          <option>Reels</option>
+          <option>Ads</option>
+          <option>Photoshoot</option>
+        </select>
+
+        <!-- Date -->
+        <input type="date" id="qeventDate" required>
+
+        <!-- Address -->
+        <input type="text" id="qaddress" placeholder="Full Address" required>
+
+        <!-- City -->
+        <input type="text" id="qcity" placeholder="Event City / Location" required>
+
+        <!-- Pincode -->
+        <input type="text" id="qpincode" placeholder="Pincode" required>
+
+        <!-- Message -->
+        <textarea id="qmessage" placeholder="Your Message"></textarea>
+
+        <!-- Captcha -->
+        <label class="captcha">
+          <input type="checkbox" id="qcaptcha" required>
+          I'm not a robot
+        </label>
+
+        <!-- Submit -->
+        <button type="submit" class="btn">Request Quote</button>
+
+      </form>
+
+    </div>
+    <script src="quote.js"></script>
+    <!-- ===== MOBILE BOTTOM NAVIGATION ===== -->
+<div class="app-bottom">
+  <a href="index.html" class="active">
+    <i class="fa fa-home"></i>Home
+  </a>
+  <a href="packages.html">
+    <i class="fa fa-box"></i>Plans
+  </a>
+  <a href="portfolio.html">
+    <i class="fa fa-film"></i>Work
+  </a>
+  <a href="more.html">
+  <i class="fa fa-ellipsis-h"></i>More
+</a>
+
+</div>
+
+
+
+    
+    <!-- FOOTER -->
+    <footer class="site-footer">
+      <div class="footer-container">
+        <div class="footer-box footer-brand">
+          <img src="original.png" class="footer-logo-img">
+          <p>Premium wedding cinematography with a cinematic storytelling approach.</p>
+        </div>
+        <div class="footer-box">
+          <h4>Quick Links</h4>
+          <ul>
+           <ul>
+          <li><a href="privacy-policy.html">Privacy Policy</a></li>
+          <li><a href="terms&condition-policy.html">Terms & Conditions</a></li>
+          <li><a href="faqs.html">FAQs</a></li>
+          <li><a href="helpandsupport.html">Help & Support</a></li>
+           <li><a href="service-agreement.html">Service-Agreement-Policy</a></li>
+            <li><a href="payment-policy.html">Payments-policy</a></li>
+        </ul>
+        </div>
+        <div class="footer-box">
+          <h4>Contact</h4>
+          <p>📍 Sikar, Rajasthan</p>
+          <p>📞 97725 09456</p>
+        </div>
+      </div>
+      <div class="footer-bottom">© 2026 Imperial Shots. All Rights Reserved.</div>
+    </footer>
+
+    <!-- REVEAL ANIMATION -->
+    <script>
+      const reveals = document.querySelectorAll('.reveal');
+      window.addEventListener('scroll', () => {
+        reveals.forEach(el => {
+          if (el.getBoundingClientRect().top < window.innerHeight - 100) el.classList.add('active');
+        });
+      });
+    </script>
+
+    <!-- PORTFOLIO JS -->
+    <script type="module" src="portfolio.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  fetch("bottom-nav.html")
+    .then(response => response.text())
+    .then(data => {
+      const container = document.createElement("div");
+      container.innerHTML = data;
+      document.body.appendChild(container);
+
+      // Current page highlight
+      const currentPage = window.location.pathname.split("/").pop();
+      const links = container.querySelectorAll("a");
+      links.forEach(link => {
+        if(link.getAttribute("href") === currentPage){
+          link.classList.add("active");
+        }
+      });
+    })
+    .catch(err => console.error("Bottom nav load failed:", err));
+});
+</script>
+
+</body>
+
+</html>

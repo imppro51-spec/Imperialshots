@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Packages – Imperial Shots</title>
+  <link href="packages.css" rel="stylesheet">
+  <link rel="stylesheet" href="sidebar-user.css"> <!-- Firebase SDK (Compat or Modular handled in JS) -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+<!-- Font Awesome -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+<link rel="stylesheet" href="paackageaapp.css" media="(max-width:768px)">
+<link href="paackageaapp.css" rel="stylesheet">
+<link rel="stylesheet" href="bottom-nav.css">
+
+
+
+<script src="sidebar-user.js"></script>
+
+</head>
+
+<body> <!-- HEADER -->
+ <header>
+  <div class="nav">
+
+    <div class="logo">
+      <img src="original.png" alt="Logo">
+    </div>
+
+   <div class="filter-box">
+
+  <!-- 🔍 Small Search -->
+  <div class="search-wrapper">
+    <i class="fa fa-search"></i>
+    <input type="text" id="searchInput" placeholder="Search">
+  </div>
+
+  <!-- 🏙 Small City Filter -->
+  <select id="cityFilter">
+    <option value="">All</option>
+    <option value="Jaipur">Jaipur</option>
+    <option value="Delhi">Delhi</option>
+    <option value="Mumbai">Mumbai</option>
+  </select>
+
+</div>
+
+    <button class="btn quote-btn">Get A Quote</button>
+
+  </div>
+</header>
+
+
+
+ <!-- ===== VERTICAL SIDEBAR ===== -->
+<div class="v-sidebar">
+
+  <!-- TOP LOGO + ICON -->
+  <div class="v-top">
+    <img src="original.png" alt="Imperial Shots" class="v-logo">
+    <i class="fa-solid fa-bars"></i>
+  </div>
+
+  <!-- MENU -->
+  <ul class="v-menu">
+
+  <li>
+    <a href="index.html">
+      <i class="fa-solid fa-house"></i>
+      <span>Home</span>
+    </a>
+  </li>
+
+  <li>
+    <a href="portfolio.html">
+      <i class="fa-solid fa-film"></i>
+      <span>Portfolio</span>
+    </a>
+  </li>
+
+  <li>
+    <a href="packages.html">
+      <i class="fa-solid fa-box-open"></i>
+      <span>Packages</span>
+    </a>
+  </li>
+
+  <!-- ✅ My Bookings -->
+   <li>
+    <a href="mybookings.html">
+      <i class="fa-solid fa-calendar-check"></i>
+      <span>My Bookings</span>
+    </a>
+  </li>
+
+  
+
+  <!-- ✅ Profile -->
+  <li>
+    <a href="profile.html">
+      <i class="fa-solid fa-user"></i>
+      <span>Profile</span>
+    </a>
+  </li>
+
+  <!-- ✅ Sign Up -->
+  <li>
+    <a href="login.html">
+      <i class="fa-solid fa-user-plus"></i>
+      <span>Sign Up</span>
+    </a>
+  </li>
+
+  <!-- ✅ Contact -->
+  <li>
+    <a href="contact.html">
+      <i class="fa-solid fa-envelope"></i>
+      <span>Contact</span>
+    </a>
+  </li>
+<li>
+    <a href="/vendor system 2.0/index.html">
+      <i class="fa-solid fa-user-tie"></i>
+      <span>Vendor</span>
+    </a>
+  </li>
+</ul>
+
+
+  <!-- USER -->
+  <div class="v-user" onclick="location.href='profile.html'">
+    <div class="v-avatar" id="userAvatar">U</div>
+    <div class="v-userinfo">
+      <span class="v-name" id="sidebarName">Guest</span>
+      <span class="v-email" id="sidebarEmail">Login required</span>
+    </div>
+  </div>
+
+</div>
+
+  <section class="hero">
+    <h1>Our Packages</h1>
+    <p>Choose the perfect package for your special moments</p>
+  </section> <!-- PACKAGES -->
+  <section class="packages" id="packagesContainer"> <!-- Packages will load dynamically from Firebase --> </section>
+  <!-- BOOKING MODAL -->
+  <div id="bookingModal" class="modal">
+  <div class="modal-box">
+    <span class="close" id="closeBooking">&times;</span>
+
+    <h2>Book Your Event</h2>
+
+    <form id="bookingForm">
+      <input type="text" id="bfname" placeholder="First Name" required>
+      <input type="text" id="blname" placeholder="Last Name">
+
+      <input type="tel" id="bphone" placeholder="Phone Number" required>
+
+      <!-- Replace single date input with start & end date -->
+<input type="date" id="bstartDate" placeholder="Start Date" required>
+<input type="date" id="bendDate" placeholder="End Date" required>
+
+
+      <input type="text" id="bpincode" placeholder="Pincode" required>
+
+      <input type="text" id="blocation" placeholder="GPS Location" readonly>
+
+      <button type="button" id="getLocation" class="btn-outline">
+        📍 Use Current Location
+      </button>
+      <input type="text" id="baddress" placeholder="Enter Full Address (House No, Area, Landmark)" required>
+
+
+      <input type="text" id="bcity" placeholder="Event City" required>
+
+      <input type="text" id="bpackage" placeholder="Package" readonly>
+
+      <input type="number" id="bprice" placeholder="Price" readonly>
+
+      <!-- ✅ ONLY ONE SUBMIT BUTTON -->
+      <button type="submit" id="continueBtn" class="checkout-btn">
+        Continue 
+      </button>
+    </form>
+  </div>
+</div>
+
+
+  
+  <!-- ✅ Thank You Popup -->
+<div id="thankPopup" style="
+  display:none;
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.6);
+  align-items:center;
+  justify-content:center;
+  z-index:9999;
+">
+  <div class="thank-box" style="
+    background:#fff;
+    padding:40px;
+    border-radius:20px;
+    text-align:center;
+    max-width:400px;
+    width:90%;
+    position:relative;
+    box-shadow:0 0 20px rgba(0,0,0,0.3);
+    animation: popIn 0.5s ease;
+  ">
+    <h2 style="color:#27ae60; margin-bottom:15px;">🎉 Booking Confirmed!</h2>
+    <p style="margin-bottom:10px; font-weight:500;">Thank you for choosing us.</p>
+    <p style="margin-bottom:15px;">Package: <b id="thankPackage"></b></p>
+    <p style="margin-bottom:15px;">Booking ID: <b id="thankID"></b></p>
+    <button id="closeThank" style="
+      padding:10px 20px;
+      border:none;
+      background:#27ae60;
+      color:#fff;
+      border-radius:10px;
+      cursor:pointer;
+      font-weight:bold;
+    ">Close</button>
+    <canvas id="confettiCanvas" style="
+      position:absolute;
+      top:0;
+      left:0;
+      width:100%;
+      height:100%;
+      pointer-events:none;
+      border-radius:20px;
+    "></canvas>
+  </div>
+</div>
+<div class="app-bottom">
+  <a href="index.html" class="active">
+    <i class="fa fa-home"></i>Home
+  </a>
+  <a href="packages.html">
+    <i class="fa fa-box"></i>Plans
+  </a>
+  <a href="portfolio.html">
+    <i class="fa fa-film"></i>Work
+  </a>
+  <a href="more.html">
+    <i class="fa fa-ellipsis-h"></i>More
+  </a>
+</div>
+
+
+<!-- ===== LOAD COMMON BOTTOM NAVIGATION ===== -->
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  fetch("bottom-nav.html")  // bottom-nav.html aapke common nav buttons ka file
+    .then(response => response.text())
+    .then(data => {
+      // Container banake page ke end me append karenge
+      const container = document.createElement("div");
+      container.innerHTML = data;
+      document.body.appendChild(container);
+
+      // Current page highlight karna
+      const currentPage = window.location.pathname.split("/").pop();
+      const links = container.querySelectorAll("a");
+      links.forEach(link => {
+        if(link.getAttribute("href") === currentPage){
+          link.classList.add("active"); // active class add
+        }
+      });
+    })
+    .catch(err => console.error("Bottom nav load failed:", err));
+});
+</script>
+<script src="bottom-nav.js"></script>
+<script type="module" src="packages.js"></script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FAQs | Imperial Shots</title>
+
+  <link rel="stylesheet" href="faqs.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+<header>
+  <h1>Imperial Shots</h1>
+  <img src="original.png" alt="Imperial Shots Logo">
+</header>
+
+<div class="container">
+
+  <a href="index.html" class="back-link">← Back to Home</a>
+
+  <h2>Frequently Asked Questions</h2>
+  <p class="subtitle">
+    Clear answers about bookings, videography, delivery & services
+  </p>
+
+  <!-- SEARCH BAR -->
+  <input
+    type="text"
+    id="faqSearch"
+    placeholder="Search topics like booking, delivery, videography..."
+    onkeyup="searchFAQ()"
+  >
+
+  <div class="faq-list" id="faqList">
+
+    <!-- BOOKING -->
+    <div class="faq-item">
+      <h3>How do I book a shoot with Imperial Shots?</h3>
+      <p>
+        You can book directly from our website or after
+        <a href="login.html">logging into your account</a>.
+        Once logged in, submit your booking details.
+      </p>
+    </div>
+
+    <div class="faq-item">
+      <h3>Where can I view my bookings?</h3>
+      <p>
+        All your bookings are available on the
+        <a href="mybookings.html">My Bookings</a> page after login.
+      </p>
+    </div>
+
+    <div class="faq-item">
+      <h3>Can I cancel or reschedule a booking?</h3>
+      <p>
+        Yes, only <strong>Pending</strong> bookings can be canceled or rescheduled
+        from the <a href="mybookings.html">My Bookings</a> section.
+      </p>
+    </div>
+
+    <!-- VIDEOGRAPHY -->
+    <div class="faq-item">
+      <h3>What videography services do you provide?</h3>
+      <p>
+        We provide Wedding Films, Pre-Wedding Shoots,
+        Reels & Short Films, and Commercial Videography.
+        Visit the <a href="index.html">Home Page</a> for full details.
+      </p>
+    </div>
+
+    <div class="faq-item">
+      <h3>Do you provide cinematic wedding films?</h3>
+      <p>
+        Yes, cinematic storytelling is our specialty.
+        Every wedding film is edited professionally with music and color grading.
+      </p>
+    </div>
+
+    <!-- DELIVERY -->
+    <div class="faq-item">
+      <h3>How long does it take to deliver photos and videos?</h3>
+      <p>
+        Final delivery usually takes <strong>2–4 weeks</strong>,
+        depending on the package and workload.
+      </p>
+    </div>
+
+    <div class="faq-item">
+      <h3>How will I receive my final photos and videos?</h3>
+      <p>
+        All final content is delivered digitally via Google Drive or private link.
+      </p>
+    </div>
+
+    <!-- RAW FOOTAGE -->
+    <div class="faq-item">
+      <h3>Do you provide raw photos or raw video footage?</h3>
+      <p>
+        Raw footage is available on request and may be chargeable
+        depending on your selected package.
+      </p>
+    </div>
+
+    <!-- PAYMENT -->
+    <div class="faq-item">
+      <h3>What payment methods do you accept?</h3>
+      <p>
+        We accept UPI, bank transfer, and cash payments.
+        Full payment details are shared during booking confirmation.
+      </p>
+    </div>
+
+    <div class="faq-item">
+      <h3>Is advance payment required?</h3>
+      <p>
+        Yes, an advance payment is required to confirm your booking date.
+      </p>
+    </div>
+
+    <!-- EDITING -->
+    <div class="faq-item">
+      <h3>Can I request changes in editing?</h3>
+      <p>
+        Minor revisions are allowed. Major re-edits may involve additional charges.
+      </p>
+    </div>
+
+    <!-- REELS -->
+    <div class="faq-item">
+      <h3>Do you create Instagram reels and short videos?</h3>
+      <p>
+        Yes, trending reels and short cinematic videos are available
+        as part of selected packages.
+      </p>
+    </div>
+
+    <!-- COMMERCIAL -->
+    <div class="faq-item">
+      <h3>Do you take commercial or brand shoots?</h3>
+      <p>
+        Yes, we handle professional ads, brand films,
+        and promotional videos.
+        Contact us via the <a href="contact.html">Contact Page</a>.
+      </p>
+    </div>
+
+    <!-- TRAVEL -->
+    <div class="faq-item">
+      <h3>Do you travel for destination weddings?</h3>
+      <p>
+        Yes, travel and stay costs are discussed separately
+        depending on the location.
+      </p>
+    </div>
+
+    <!-- SUPPORT -->
+    <div class="faq-item">
+      <h3>How can I contact support?</h3>
+      <p>
+        You can reach us through the
+        <a href="contact.html">Contact Us</a> page or WhatsApp.
+      </p>
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  <p>
+    © 2026 Imperial Shots ·
+    <a href="index.html">Home</a> |
+    <a href="mybookings.html">My Bookings</a> |
+    <a href="contact.html">Contact</a>
+  </p>
+</footer>
+
+<!-- SEARCH SCRIPT -->
+<script>
+function searchFAQ() {
+  const input = document.getElementById("faqSearch").value.toLowerCase();
+  const items = document.querySelectorAll(".faq-item");
+
+  items.forEach(item => {
+    const text = item.innerText.toLowerCase();
+    item.style.display = text.includes(input) ? "block" : "none";
+  });
+}
+</script>
+
+</body>
+</html>

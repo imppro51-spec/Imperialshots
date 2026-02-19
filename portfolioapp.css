@@ -1,0 +1,320 @@
+/* ================= MOBILE APP CSS ================= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  background: #fff;
+  color: #111;
+  font-size: 14px;
+  line-height: 1.5;
+  padding-top: 60px; /* header height */
+  padding-bottom: 70px; /* bottom nav height */
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+button, input, select, textarea {
+  font-family: inherit;
+}
+
+/* ===== APP HEADER ===== */
+.app-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 60px;
+  background: #f5f5f5;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 15px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  z-index: 999;
+}
+
+.app-header .dp {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #d4af37;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.app-header .logo img {
+  height: 40px;
+}
+
+.app-header .notification {
+  font-size: 20px;
+  cursor: pointer;
+}
+
+/* ===== SLIDER ===== */
+.app-slider {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  margin-top: 60px;
+}
+
+.slider-track {
+  display: flex;
+  transition: transform 0.4s ease;
+}
+
+.slide {
+  min-width: 100%;
+  position: relative;
+}
+
+.slide img {
+  width: 100%;
+  display: block;
+  border-radius: 8px;
+}
+
+.slide-content {
+  position: absolute;
+  bottom: 15px;
+  left: 15px;
+  color: #fff;
+}
+
+.slider-dots {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 5px;
+}
+
+.slider-dots span {
+  display: block;
+  width: 8px;
+  height: 8px;
+  background: rgba(255,255,255,0.5);
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.slider-dots span.active {
+  background: #d4af37;
+}
+
+/* ===== PORTFOLIO GRID ===== */
+.portfolio-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 12px;
+  padding: 15px;
+}
+
+.portfolio-grid .card {
+  background: #f5f5f5;
+  padding: 10px;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.portfolio-grid .card img {
+  width: 100%;
+  border-radius: 8px;
+}
+
+.portfolio-grid .card h4 {
+  margin-top: 8px;
+  font-size: 14px;
+}
+
+/* ===== CTA BUTTON ===== */
+.cta {
+  padding: 15px;
+  text-align: center;
+}
+
+.cta .btn {
+  background: #d4af37;
+  color: #000;
+  padding: 12px 20px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+/* ===== BOTTOM NAVIGATION ===== */
+.app-bottom {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 60px;
+  background: #f5f5f5;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+  z-index: 999;
+}
+
+.app-bottom a {
+  text-align: center;
+  font-size: 12px;
+  color: #111;
+}
+
+.app-bottom a i {
+  display: block;
+  font-size: 20px;
+  margin-bottom: 2px;
+}
+
+.app-bottom a.active {
+  color: #d4af37;
+}
+
+/* ===== GET A QUOTE / ENQUIRY MODAL ===== */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6);
+  justify-content: center;
+  align-items: center;
+  padding: 15px;
+  z-index: 9999;
+}
+
+.modal-box {
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 400px;
+}
+
+.modal-box h2 {
+  margin-bottom: 15px;
+  font-size: 18px;
+  text-align: center;
+}
+
+.modal-box .form-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.modal-box input,
+.modal-box select,
+.modal-box textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+.modal-box textarea {
+  resize: vertical;
+  min-height: 60px;
+}
+
+.modal-box button {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  border: none;
+  background: #d4af37;
+  color: #000;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.modal-box .close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+/* ===== HIDE FOOTER, GET IN TOUCH & SIDEBAR FOR APP VIEW ===== */
+@media (max-width: 768px) {
+  .contact,       /* Get in Touch section */
+  .site-footer,    /* Footer */
+  .v-sidebar {     /* Sidebar */
+    display: none !important;
+  }
+}
+/* Hide Bottom Navigation on Desktop */
+@media (min-width: 769px) {
+  .app-bottom {
+    display: none !important;
+  }
+
+  body {
+    padding-bottom: 0; /* remove bottom space on desktop */
+  }
+}
+/* ===== MODAL BACKGROUND ===== */
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  display: none; /* IMPORTANT – default closed */
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  padding: 15px;
+}
+
+/* Show Class */
+.modal.show {
+  display: flex;
+}
+
+/* ===== MODAL BOX ===== */
+.modal-box {
+  background: #fff;
+  width: 100%;
+  max-width: 420px;
+  max-height: 90vh;
+  border-radius: 14px;
+  padding: 15px;
+  overflow-y: auto;
+  position: relative;
+  animation: fadeIn 0.3s ease;
+}
+
+/* Close Button */
+.close {
+  position: absolute;
+  right: 15px;
+  top: 10px;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+/* Animation */
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
