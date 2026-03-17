@@ -5,7 +5,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Rewards System</title>
+<title>Theme Selector</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
 
@@ -15,10 +15,11 @@ body{
 font-family:Poppins;
 background:#f4f4f4;
 padding:30px;
+transition:0.3s;
 }
 
 .container{
-max-width:700px;
+max-width:500px;
 margin:auto;
 }
 
@@ -27,26 +28,9 @@ background:#fff;
 padding:22px;
 border-radius:12px;
 box-shadow:0 10px 25px rgba(0,0,0,.08);
-margin-bottom:20px;
 }
 
 h2{margin-bottom:12px}
-
-button{
-padding:10px 18px;
-border:none;
-border-radius:6px;
-background:#d4af37;
-cursor:pointer;
-}
-
-input{
-width:100%;
-padding:10px;
-border:1px solid #ddd;
-border-radius:6px;
-margin-top:10px;
-}
 
 /* THEME */
 
@@ -88,121 +72,6 @@ display:flex;
 .pink{background:#ff2d8d;}
 .orange{background:#ff7a00;}
 
-/* WALLET */
-
-.wallet{
-font-size:26px;
-font-weight:600;
-color:#d4af37;
-}
-
-/* CARD */
-
-.card{
-width:100%;
-height:130px;
-perspective:1000px;
-margin-top:15px;
-position:relative;
-}
-
-.card-inner{
-width:100%;
-height:100%;
-transition:transform .6s;
-transform-style:preserve-3d;
-}
-
-.card.flipped .card-inner{
-transform:rotateY(180deg);
-}
-
-.face{
-position:absolute;
-width:100%;
-height:100%;
-border-radius:12px;
-backface-visibility:hidden;
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:22px;
-}
-
-.front{
-background:#c9c9c9;
-cursor:pointer;
-}
-
-.back{
-background:#111;
-color:#fff;
-flex-direction:column;
-transform:rotateY(180deg);
-}
-
-.exp{
-font-size:12px;
-opacity:.7;
-}
-
-.select{
-position:absolute;
-top:8px;
-right:8px;
-}
-
-/* POPUP */
-
-.popup{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:rgba(0,0,0,.6);
-display:none;
-align-items:center;
-justify-content:center;
-}
-
-.reward{
-background:#111;
-color:#fff;
-padding:40px;
-border-radius:12px;
-font-size:28px;
-}
-
-/* SPIN */
-
-/* .wheel{
-width:200px;
-height:200px;
-border-radius:50%;
-border:8px solid #ddd;
-margin:auto;
-position:relative;
-transition:transform 4s cubic-bezier(.17,.67,.83,.67);
-}
-
-.slice{
-position:absolute;
-width:50%;
-height:50%;
-background:#d4af37;
-transform-origin:100% 100%;
-}
-
-.pointer{
-width:0;
-height:0;
-border-left:10px solid transparent;
-border-right:10px solid transparent;
-border-bottom:20px solid #111;
-margin:auto;
-} */
-
 </style>
 
 </head>
@@ -213,7 +82,7 @@ margin:auto;
 
 <div class="box">
 
-<h2>Theme</h2>
+<h2>Select Theme</h2>
 
 <div class="theme-grid">
 
@@ -227,306 +96,7 @@ margin:auto;
 
 </div>
 
-<div class="box">
-
-<h2>Your Wallet</h2>
-
-<div class="wallet" id="wallet">0 Points</div>
-
 </div>
-
-<div class="box">
-
-<h2>Your Referral Code</h2>
-
-<div id="myCode"></div>
-
-</div>
-
-<div class="box">
-
-<h2>Enter Referral Code</h2>
-
-<input id="refInput" placeholder="Enter 6 digit code">
-
-<button onclick="applyCode()">Apply</button>
-
-<p id="msg"></p>
-
-</div>
-
-<!-- <div class="box">
-
-<h2>Spin Reward</h2>
-
-<div class="pointer"></div>
-
-<div class="wheel" id="wheel"></div>
-
-<button onclick="spin()">Spin</button>
-
-</div>
-
-<div class="box"> -->
-
-<h2>Your Rewards</h2>
-
-<button onclick="deleteSelected()">Delete Selected</button>
-
-<div id="cards"></div>
-
-</div>
-
-</div>
-
-<div class="popup" id="popup">
-<div class="reward" id="rewardText"></div>
-</div>
-
-
-<script type="module">
-
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"
-import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js"
-
-const firebaseConfig={
-apiKey:"AIzaSyAvfmCKZQGxWdNUyqySV5IPk8DiFU4F23U",
-databaseURL:"https://imperialshots-d468c-default-rtdb.asia-southeast1.firebasedatabase.app"
-}
-
-const app=initializeApp(firebaseConfig)
-const db=getDatabase(app)
-
-let coupons=[]
-
-onValue(ref(db,"coupons"),snap=>{
-
-coupons=[]
-
-snap.forEach(s=>{
-
-const c=s.val()
-
-const now=Date.now()
-
-if(c.active && now>c.start && now<c.end){
-
-coupons.push({
-code:s.key,
-end:c.end
-})
-
-}
-
-})
-
-})
-
-/* REF CODE */
-
-if(!localStorage.getItem("refCode")){
-
-let code=Math.floor(100000+Math.random()*900000)
-
-localStorage.setItem("refCode",code)
-
-}
-
-myCode.innerText=localStorage.getItem("refCode")
-
-/* WALLET */
-
-// if(!localStorage.getItem("wallet")){
-
-// localStorage.setItem("wallet",0)
-
-// }
-
-// function updateWallet(){
-
-// wallet.innerText=localStorage.getItem("wallet")+" Points"
-
-// }
-
-// updateWallet()
-
-/* APPLY CODE */
-
-window.applyCode=()=>{
-
-let entered=refInput.value
-
-let my=localStorage.getItem("refCode")
-
-let used=JSON.parse(localStorage.getItem("usedCodes")||"[]")
-
-if(entered==my){
-msg.innerText="You cannot use your own code"
-return
-}
-
-if(used.includes(entered)){
-msg.innerText="Code already used"
-return
-}
-
-if(coupons.length==0){
-msg.innerText="No coupons available"
-return
-}
-
-let reward=coupons[Math.floor(Math.random()*coupons.length)]
-
-let rewards=JSON.parse(localStorage.getItem("rewards")||"[]")
-
-rewards.push({
-code:reward.code,
-expiry:reward.end,
-scratched:false,
-selected:false
-})
-
-localStorage.setItem("rewards",JSON.stringify(rewards))
-
-used.push(entered)
-
-localStorage.setItem("usedCodes",JSON.stringify(used))
-
-showReward(reward.code)
-
-render()
-
-}
-
-/* SPIN */
-
-// window.spin=()=>{
-
-// let deg=3600+Math.random()*360
-
-// wheel.style.transform="rotate("+deg+"deg)"
-
-// setTimeout(()=>{
-
-// let win=50
-
-// let w=parseInt(localStorage.getItem("wallet"))
-
-// w+=win
-
-// localStorage.setItem("wallet",w)
-
-// updateWallet()
-
-// showReward(win+" Points")
-
-// },4000)
-
-// }
-
-/* POPUP */
-
-// function showReward(text){
-
-// popup.style.display="flex"
-
-// rewardText.innerText="🎉 "+text
-
-// setTimeout(()=>popup.style.display="none",2000)
-
-// }
-
-/* RENDER */
-
-function render(){
-
-let rewards=JSON.parse(localStorage.getItem("rewards")||"[]")
-
-let html=""
-
-rewards.forEach((r,i)=>{
-
-html+=`
-
-<div class="card ${r.scratched?'flipped':''}">
-
-<div class="card-inner">
-
-<div class="face front" onclick="scratch(${i})">
-
-SCRATCH
-
-</div>
-
-<div class="face back">
-
-${r.code}
-
-<div class="exp">
-
-Valid till ${new Date(r.expiry).toLocaleDateString()}
-
-</div>
-
-</div>
-
-</div>
-
-<input type="checkbox" class="select" onchange="selectCard(${i},this)" ${r.selected?'checked':''}>
-
-</div>
-
-`
-
-})
-
-cards.innerHTML=html
-
-}
-
-/* SCRATCH */
-
-window.scratch=(i)=>{
-
-let rewards=JSON.parse(localStorage.getItem("rewards"))
-
-rewards[i].scratched=true
-
-localStorage.setItem("rewards",JSON.stringify(rewards))
-
-render()
-
-}
-
-/* SELECT */
-
-window.selectCard=(i,box)=>{
-
-let rewards=JSON.parse(localStorage.getItem("rewards"))
-
-rewards[i].selected=box.checked
-
-localStorage.setItem("rewards",JSON.stringify(rewards))
-
-}
-
-/* DELETE */
-
-window.deleteSelected=()=>{
-
-let rewards=JSON.parse(localStorage.getItem("rewards"))
-
-rewards=rewards.filter(r=>!r.selected)
-
-localStorage.setItem("rewards",JSON.stringify(rewards))
-
-render()
-
-}
-
-render()
-
-</script>
 
 <script>
 
@@ -535,8 +105,47 @@ function setTheme(theme,btn){
 localStorage.setItem("theme",theme)
 
 document.querySelectorAll(".theme-btn").forEach(b=>b.classList.remove("active"))
-
 btn.classList.add("active")
+
+applyTheme(theme)
+
+}
+
+function applyTheme(theme){
+
+if(theme=="dark"){
+document.body.style.background="#111"
+document.body.style.color="#fff"
+}
+else if(theme=="blue"){
+document.body.style.background="#e3f2fd"
+}
+else if(theme=="pink"){
+document.body.style.background="#ffe4ec"
+}
+else if(theme=="orange"){
+document.body.style.background="#fff3e0"
+}
+else{
+document.body.style.background="#f4f4f4"
+document.body.style.color="#000"
+}
+
+}
+
+// load saved theme
+
+let savedTheme=localStorage.getItem("theme")
+
+if(savedTheme){
+
+applyTheme(savedTheme)
+
+document.querySelectorAll(".theme-btn").forEach(btn=>{
+if(btn.classList.contains(savedTheme)){
+btn.classList.add("active")
+}
+})
 
 }
 

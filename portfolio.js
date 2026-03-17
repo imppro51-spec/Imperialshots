@@ -16,122 +16,159 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
-// ---------------- DOM ELEMENTS ----------------
+// ---------------- DOM ----------------
 const grid = document.querySelector(".portfolio-grid");
-const bookBtn = document.querySelector(".book-btn");
-const spinner = document.querySelector(".spinner");
-const viewMoreBtn = document.getElementById("viewMoreBtn");
 const heroImage = document.getElementById("heroImage");
 const heroVideo = document.getElementById("heroVideo");
+const heroVideoSection = document.querySelector(".hero-video");
 
 let mediaItems = [];
 let currentFilter = "all";
-const ITEMS_PER_PAGE = 6;
-let visibleCount = ITEMS_PER_PAGE;
 
-// ---------------- FETCH HERO BANNER ----------------
+// ---------------- HERO ----------------
 onValue(ref(db, "heroBanner"), snapshot => {
   const data = snapshot.val();
   if (!data) return;
+
   if (data.type === "video") {
     heroVideo.src = data.url;
-    heroVideo.style.display = "block";
+    heroVideoSection.style.display = "block";
     heroImage.style.display = "none";
   } else {
     heroImage.src = data.url;
     heroImage.style.display = "block";
-    heroVideo.style.display = "none";
+    heroVideoSection.style.display = "none";
   }
 });
 
-// ---------------- FETCH PORTFOLIO ----------------
-const sections = ["wedding","prewedding","reels","ads"];
-sections.forEach(section => {
-  onValue(ref(db, section), snap => {
-    snap.forEach(item => {
-      const data = item.val();
-      if (!data.active) return;
-      const exists = mediaItems.find(m => m.key === item.key && m.section === section);
-      if (!exists) mediaItems.push({...data,key:item.key,section});
+// ---------------- FETCH MEDIA ----------------
+onValue(ref(db, "portfolio"), snap => {
+  mediaItems = [];
+
+  snap.forEach(item => {
+    const d = item.val();
+    if (!d.active) return;
+
+    // 🔥 FIX: category detect
+    const category = d.category || d.desc || "other";
+
+    mediaItems.push({
+      ...d,
+      key: item.key,
+      category
     });
-    displayMedia(currentFilter);
   });
+
+  displayMedia();
 });
 
-// ---------------- FILTER BUTTONS ----------------
+// ---------------- FILTER ----------------
 document.querySelectorAll(".filter-btn").forEach(btn => {
   btn.addEventListener("click", () => {
-    document.querySelectorAll(".filter-btn").forEach(b=>b.classList.remove("active"));
+    document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
     btn.classList.add("active");
-    visibleCount = ITEMS_PER_PAGE;
+
     currentFilter = btn.dataset.filter;
-    displayMedia(currentFilter);
+    displayMedia();
   });
 });
 
-// ---------------- DISPLAY MEDIA ----------------
-function displayMedia(filter){
-  if(spinner) spinner.style.display = "block";
+// ---------------- DISPLAY ----------------
+function displayMedia() {
+  if (!grid) return;
 
-  setTimeout(()=>{
-    if(!grid) return;
-    grid.innerHTML = "";
-    const filtered = filter === "all" ? mediaItems : mediaItems.filter(m => m.section === filter);
-    const itemsToShow = filtered.slice(0, visibleCount);
+  grid.innerHTML = "";
 
-    itemsToShow.forEach(m => {
-      const card = document.createElement("div");
-      card.className = "item "+m.section;
-      card.innerHTML = `
-        ${m.type === 'video' ? `<video src="${m.url}" muted loop preload="metadata"></video>` : `<img src="${m.thumb || m.url}">`}
-        <span>${m.title || m.section}</span>
-        <button class="cta-btn">❤ ${m.likes || 0}</button>
-      `;
+  const filtered = currentFilter === "all"
+    ? mediaItems
+    : mediaItems.filter(m => m.category === currentFilter);
 
-      // Video hover
-      const vid = card.querySelector("video");
-      if(vid){
-        card.addEventListener("mouseenter",()=>vid.play());
-        card.addEventListener("mouseleave",()=>vid.pause());
+  if(filtered.length === 0){
+    grid.innerHTML = "<p style='color:white'>No media found</p>";
+    return;
+  }
+
+  filtered.forEach(m => {
+    const card = document.createElement("div");
+    card.className = "item";
+
+    card.innerHTML = `
+      <div class="media-box">
+        ${m.type === 'video'
+          ? `<video src="${m.url}" muted loop preload="metadata"></video>`
+          : `<img src="${m.thumb || m.url}">`}
+      </div>
+
+      <div class="info">
+        <span>${m.title || m.category}</span>
+        <button class="like-btn">❤ ${m.likes || 0}</button>
+      </div>
+    `;
+
+    // 🎬 VIDEO HOVER
+    const vid = card.querySelector("video");
+    if (vid) {
+      card.addEventListener("mouseenter", () => vid.play());
+      card.addEventListener("mouseleave", () => vid.pause());
+    }
+
+    // ❤️ LIKE SYSTEM
+    card.querySelector(".like-btn").onclick = async e => {
+      e.stopPropagation();
+
+      const userKey = localStorage.getItem("userId") || Date.now().toString();
+      localStorage.setItem("userId", userKey);
+
+      if (!m.userLikes) m.userLikes = {};
+
+      if (m.userLikes[userKey]) {
+        return alert("Already liked ❤️");
       }
 
-      // Like button
-      card.querySelector(".cta-btn").onclick = async e => {
-        e.stopPropagation();
-        const userKey = localStorage.getItem("userId") || Date.now().toString();
-        localStorage.setItem("userId", userKey);
+      m.userLikes[userKey] = true;
 
-        if(!m.userLikes) m.userLikes={};
-        if(m.userLikes[userKey]) return alert("You already liked!");
-        m.userLikes[userKey] = true;
+      const newLikes = (m.likes || 0) + 1;
+      m.likes = newLikes;
 
-        const newLikes = (m.likes||0) + 1;
-        card.querySelector(".cta-btn").textContent = "❤ " + newLikes;
-        m.likes = newLikes;
+      e.target.textContent = "❤ " + newLikes;
 
-        await update(ref(db, `${m.section}/${m.key}`), {likes:newLikes, userLikes:m.userLikes});
-      }
+      await update(ref(db, `portfolio/${m.key}`), {
+        likes: newLikes,
+        userLikes: m.userLikes
+      });
+    };
 
-      grid.appendChild(card);
-    });
+    // 🔍 PREVIEW
+    card.onclick = () => openPreview(m);
 
-    if(viewMoreBtn) viewMoreBtn.style.display = filtered.length > visibleCount ? "block" : "none";
-    if(spinner) spinner.style.display = "none";
-  }, 200);
-}
-
-// ---------------- VIEW MORE ----------------
-if(viewMoreBtn){
-  viewMoreBtn.addEventListener("click", ()=>{
-    visibleCount += ITEMS_PER_PAGE;
-    displayMedia(currentFilter);
+    grid.appendChild(card);
   });
 }
 
-// ---------------- BOOK BUTTON ----------------
-if(bookBtn){
-  bookBtn.onclick = ()=> {
-    const modal = document.getElementById("quoteModal");
-    if(modal) modal.style.display = "flex";
+// ---------------- PREVIEW MODAL ----------------
+function openPreview(media) {
+
+  let modal = document.getElementById("previewModal");
+
+  if (!modal) {
+    modal = document.createElement("div");
+    modal.id = "previewModal";
+    modal.innerHTML = `
+      <div class="preview-content">
+        <span class="close">&times;</span>
+        <div class="preview-body"></div>
+      </div>
+    `;
+    document.body.appendChild(modal);
+
+    modal.querySelector(".close").onclick = () => modal.style.display = "none";
   }
+
+  const body = modal.querySelector(".preview-body");
+
+  body.innerHTML = media.type === "video"
+    ? `<video src="${media.url}" controls autoplay></video>`
+    : `<img src="${media.url}">`;
+
+  modal.style.display = "flex";
 }
