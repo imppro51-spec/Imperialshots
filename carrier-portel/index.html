@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login / Signup - Company Portal</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<!-- Font Awesome CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+<style>
+body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background: #f4f6f9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+.container {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+    padding: 35px 40px;
+    width: 100%;
+    max-width: 400px;
+    box-sizing: border-box;
+}
+h2 {
+    margin-top: 0;
+    margin-bottom: 25px;
+    text-align: center;
+    color: #1f2937;
+}
+.form-group { margin-bottom: 15px; }
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+    color: #4b5563;
+}
+input {
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #cbd5e1;
+    font-size: 14px;
+}
+button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 8px;
+    background: #2563eb;
+    color: white;
+    font-weight: 600;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+button:hover { background: #1d4ed8; }
+.google-btn { background: #f59e0b; color: white; }
+.google-btn i { margin-right: 8px; }
+.google-btn:hover { background: #d97706; }
+.toggle-link {
+    margin-top: 15px;
+    display: block;
+    text-align: center;
+    color: #2563eb;
+    cursor: pointer;
+    font-size: 14px;
+}
+.toggle-link:hover { text-decoration: underline; }
+#error-msg { color: red; font-size: 13px; margin-bottom: 10px; text-align: center; }
+.success-popup {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #2563eb;
+    color: white;
+    padding: 15px 25px;
+    border-radius: 12px;
+    font-weight: 600;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    z-index: 1000;
+    opacity: 0;
+    transition: opacity 0.5s;
+}
+.success-popup.show { opacity: 1; }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h2 id="form-title">Sign Up</h2>
+    <div id="error-msg"></div>
+    <form id="auth-form">
+        <div class="form-group" id="name-group">
+            <label for="name">Employee Name</label>
+            <input type="text" id="name" placeholder="John Doe" required>
+        </div>
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" placeholder="example@mail.com" required>
+        </div>
+        <div class="form-group" id="password-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" placeholder="******" required>
+        </div>
+        <button type="submit" id="submit-btn">Sign Up</button>
+    </form>
+    <button class="google-btn" id="google-btn"><i class="fab fa-google"></i> Continue with Google</button>
+    <span class="toggle-link" id="toggle-link">Already have an account? Login</span>
+</div>
+
+<div id="success-popup" class="success-popup"></div>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+
+<script>
+// Firebase config
+const firebaseConfig = {
+  apiKey: "AIzaSyDmmcRlCs6K0PzxnFkuA0qv5U5K3V6x8QQ",
+  authDomain: "vendors-d084b.firebaseapp.com",
+  databaseURL: "https://vendors-d084b-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "vendors-d084b",
+  storageBucket: "vendors-d084b.firebasestorage.app",
+  messagingSenderId: "58526160322",
+  appId: "1:58526160322:web:dbd489764ebfc5e2eff25b",
+  measurementId: "G-6MHKLQR9S7"
+};
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+
+// Elements
+const formTitle = document.getElementById('form-title');
+const authForm = document.getElementById('auth-form');
+const toggleLink = document.getElementById('toggle-link');
+const errorMsg = document.getElementById('error-msg');
+const googleBtn = document.getElementById('google-btn');
+const nameGroup = document.getElementById('name-group');
+const submitBtn = document.getElementById('submit-btn');
+const successPopup = document.getElementById('success-popup');
+
+let isSignUp = true;
+
+// Show popup
+function showPopup(msg){
+    successPopup.textContent = msg;
+    successPopup.classList.add('show');
+    setTimeout(()=>successPopup.classList.remove('show'), 2500);
+}
+
+// Toggle SignUp/Login
+toggleLink.addEventListener('click', () => {
+    isSignUp = !isSignUp;
+    formTitle.textContent = isSignUp ? 'Sign Up' : 'Login';
+    submitBtn.textContent = isSignUp ? 'Sign Up' : 'Login';
+    toggleLink.textContent = isSignUp ? 'Already have an account? Login' : "Don't have an account? Sign Up";
+    nameGroup.style.display = isSignUp ? 'block' : 'none';
+    errorMsg.textContent = '';
+});
+
+// Form submit
+authForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    errorMsg.textContent = '';
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    const name = document.getElementById('name').value;
+
+    try {
+        if(isSignUp){
+            const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+            await userCredential.user.updateProfile({ displayName: name });
+            showPopup(`Welcome, ${name}!`);
+            setTimeout(()=>window.location.href="career-portal.html", 2000);
+        } else {
+            const userCredential = await auth.signInWithEmailAndPassword(email, password);
+            const displayName = userCredential.user.displayName || email.split('@')[0];
+            showPopup(`Welcome Back, ${displayName}!`);
+            setTimeout(()=>window.location.href="career-portal.html", 2000);
+        }
+    } catch(error){
+        errorMsg.textContent = error.message;
+    }
+});
+
+// Google Sign-In
+googleBtn.addEventListener('click', async () => {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    try {
+        const result = await auth.signInWithPopup(provider);
+        const user = result.user;
+        showPopup(`Welcome, ${user.displayName}!`);
+        setTimeout(()=>window.location.href="career-portal.html", 2000);
+    } catch(error){
+        errorMsg.textContent = error.message;
+    }
+});
+</script>
+
+</body>
+</html>

@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 const express = require("express");
 const Razorpay = require("razorpay");
 const crypto = require("crypto");
@@ -6,9 +8,19 @@ const admin = require("firebase-admin");
 
 const app = express();
 
-/* ================= CORS (FULL FIX FOR NOW) ================= */
+/* ================= CORS FIX ================= */
 
-app.use(cors());
+// Allow all origins (safe for now — later restrict in production)
+app.use(
+  cors({
+    origin: true,
+    credentials: true,
+    methods: ["GET", "POST", "OPTIONS"],
+    allowedHeaders: ["Content-Type"],
+  })
+);
+
+// Handle preflight explicitly
 app.options("*", cors());
 
 app.use(express.json());
@@ -25,11 +37,14 @@ admin.initializeApp({
 
 const db = admin.database();
 
-/* ================= RAZORPAY ================= */
+/* ================= ENV CHECK ================= */
 
 if (!process.env.RAZORPAY_KEY_ID || !process.env.RAZORPAY_KEY_SECRET) {
   console.error("❌ Razorpay ENV variables missing!");
+  process.exit(1);
 }
+
+/* ================= RAZORPAY ================= */
 
 const razorpay = new Razorpay({
   key_id: process.env.RAZORPAY_KEY_ID,
@@ -39,8 +54,10 @@ const razorpay = new Razorpay({
 /* ================= HEALTH CHECK ================= */
 
 app.get("/", (req, res) => {
-  res.send("🚀 Imperial Backend Running Securely");
+  res.status(200).send("🚀 Imperial Backend Running Securely");
 });
+
+/* ================= CREATE ORDER ================= */
 
 /* ================= CREATE ORDER ================= */
 
@@ -51,7 +68,10 @@ app.post("/create-order", async (req, res) => {
     const { bookingId, paymentType } = req.body;
 
     if (!bookingId || !paymentType) {
-      return res.status(400).json({ error: "Missing bookingId or paymentType" });
+      return res.status(400).json({
+        success: false,
+        error: "Missing bookingId or paymentType",
+      });
     }
 
     let amount = 0;
@@ -62,22 +82,34 @@ app.post("/create-order", async (req, res) => {
       booking = snap.val();
 
       if (!booking) {
-        return res.status(404).json({ error: "Temp booking not found" });
+        console.log("❌ Temp booking not found");
+        return res.status(404).json({
+          success: false,
+          error: "Temp booking not found",
+        });
       }
 
-      const total = Number(booking.totalAmount || 0);
+      const total = parseFloat(booking.totalAmount) || 0;
       amount = Math.round(total * 0.2);
     } else {
       const snap = await db.ref("bookings/" + bookingId).once("value");
       booking = snap.val();
 
       if (!booking) {
-        return res.status(404).json({ error: "Booking not found" });
+        console.log("❌ Booking not found");
+        return res.status(404).json({
+          success: false,
+          error: "Booking not found",
+        });
       }
 
-      const total = Number(booking.totalAmount || 0);
-      const discount = Number(booking.discount || 0);
+      const total = parseFloat(booking.totalAmount) || 0;
+      const discount = parseFloat(booking.discount) || 0;
       const netTotal = total - discount;
+
+      console.log("TOTAL:", total);
+      console.log("DISCOUNT:", discount);
+      console.log("NET TOTAL:", netTotal);
 
       if (paymentType === "mid") {
         amount = Math.round(netTotal * 0.3);
@@ -88,8 +120,12 @@ app.post("/create-order", async (req, res) => {
       }
     }
 
-    if (amount <= 0) {
-      return res.status(400).json({ error: "Invalid amount calculation" });
+    if (!amount || amount <= 0) {
+      console.log("❌ Invalid amount:", amount);
+      return res.status(400).json({
+        success: false,
+        error: "Invalid amount calculation",
+      });
     }
 
     console.log("💰 FINAL AMOUNT:", amount);
@@ -102,23 +138,25 @@ app.post("/create-order", async (req, res) => {
 
     console.log("✅ ORDER CREATED:", order.id);
 
-    res.json({
-      order,
+    return res.status(200).json({
+      success: true,
+      orderId: order.id,
+      amount: order.amount,
+      currency: order.currency,
       key: process.env.RAZORPAY_KEY_ID,
     });
-
   } catch (err) {
     console.error("❌ CREATE ORDER ERROR:", err);
-    res.status(500).json({ error: err.message });
+    return res.status(500).json({
+      success: false,
+      error: "Order creation failed",
+    });
   }
 });
-
 /* ================= VERIFY PAYMENT ================= */
 
 app.post("/verify-payment", async (req, res) => {
   try {
-    console.log("📥 VERIFY BODY:", req.body);
-
     const {
       razorpay_order_id,
       razorpay_payment_id,
@@ -135,7 +173,10 @@ app.post("/verify-payment", async (req, res) => {
       .digest("hex");
 
     if (expectedSignature !== razorpay_signature) {
-      return res.status(400).json({ success: false, error: "Invalid signature" });
+      return res.status(400).json({
+        success: false,
+        error: "Invalid signature",
+      });
     }
 
     const updates = { razorpay_payment_id };
@@ -153,15 +194,17 @@ app.post("/verify-payment", async (req, res) => {
 
     await db.ref("bookings/" + bookingId).update(updates);
 
-    res.json({ success: true });
-
+    return res.json({ success: true });
   } catch (err) {
     console.error("❌ VERIFY ERROR:", err);
-    res.status(500).json({ success: false, error: err.message });
+    return res.status(500).json({
+      success: false,
+      error: "Verification failed",
+    });
   }
 });
 
-/* ================= SERVER ================= */
+/* ================= START SERVER ================= */
 
 const PORT = process.env.PORT || 5000;
 

@@ -1,11 +1,30 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Vendor Registration - Imperial Shots</title>
+  <title>Vendor Registration – Get Photography & Videography Clients in Jaipur | Imperial Shots</title>
   <link rel="stylesheet" href="index.css">
+  <link rel="stylesheet" href="indexapp.css" media="(max-width:768px)">
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+  
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+<meta name="description" content="Are you a videographer, editor, makeup artist or mehndi artist in Jaipur, Sikar or Jhunjhunu? Register on Imperial Shots and get more wedding clients and bookings.">
+<meta name="keywords" content="
+how to get photography clients in jaipur,
+videographer work jaipur,
+wedding photographer jobs sikar,
+videography clients jhunjhunu,
+how to get more clients as videographer,
+photography work rajasthan,
+register videographer jaipur,
+imperial shots vendor registration
+">
 </head>
+<div class="seo-bg-text">
+  Are you a videographer, editor, makeup artist or mehndi artist in Jaipur,
+  Sikar or Jhunjhunu? Register on Imperial Shots and get more wedding clients
+  and bookings. Join our vendor network and grow your photography or
+  videography business with real wedding leads.
+</div>
 <body>
 
 <div class="container">
@@ -43,15 +62,30 @@
   </div>
 
   <!-- STEP 3 -->
-  <div class="form-step" id="step3">
-    <h3>Identity Proof</h3>
+ <!-- STEP 3 -->
+<div class="form-step" id="step3">
 
-    <input type="text" id="aadhaar" placeholder="Aadhaar Number">
-    <input type="text" id="pan" placeholder="PAN Number">
+  <h3>Identity Proof</h3>
 
-    <button onclick="prevStep(3)">Back</button>
-    <button onclick="submitVendor()">Submit</button>
+  <input type="text" id="aadhaar" placeholder="Aadhaar Number">
+
+  <input type="text" id="pan" placeholder="PAN Number">
+
+  <!-- Referral Code -->
+  <input type="text" id="referral" placeholder="Referral Code (Optional)">
+
+  <div class="terms">
+    <label>
+      <input type="checkbox" id="agreeTerms">
+      I agree to the 
+      <a href="/vendor-t&c.html" target="_blank">Terms & Conditions</a>
+    </label>
   </div>
+
+
+  <button onclick="prevStep(3)">Back</button>
+  <button onclick="submitVendor()">Submit</button>
+</div>
 
   <div id="successMessage" class="hidden"></div>
 
@@ -72,6 +106,6 @@ function goBack() {
   window.history.back();
 }
 </script>
-
+<script src="offline.js"></script>
 </body>
 </html>

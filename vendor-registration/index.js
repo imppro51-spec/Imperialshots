@@ -42,6 +42,13 @@ function calculateAge(dob) {
 // ================= SUBMIT =================
 function submitVendor() {
 
+  const agree = document.getElementById("agreeTerms").checked;
+
+  if(!agree){
+    alert("Please agree to Terms & Conditions before submitting.");
+    return;
+  }
+
   const name = document.getElementById("name").value.trim();
   const phone = document.getElementById("phone").value.trim();
   const email = document.getElementById("email").value.trim();
@@ -61,6 +68,8 @@ function submitVendor() {
   const aadhaar = document.getElementById("aadhaar").value;
   const pan = document.getElementById("pan").value;
 
+  const referral = document.getElementById("referral").value.trim().toUpperCase() || "direct";
+
   if (!name || !phone || !email || !dob || !studioName || !portfolio || !aadhaar || !pan) {
     alert("Please fill all required fields");
     return;
@@ -74,6 +83,9 @@ function submitVendor() {
     age,
     city: "-",
     studioName,
+
+    referral: referral,  // 👈 IMPORTANT
+
     assets: {
       camera,
       drone,
@@ -84,10 +96,12 @@ function submitVendor() {
       portfolio
     },
     experience,
+
     identity: {
       aadhaar,
       pan
     },
+
     status: "pending",
     createdAt: Date.now()
   });

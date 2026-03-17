@@ -300,7 +300,90 @@ body{
     display:none;
   }
 }
+/* DARK THEME */
 
+body[data-theme="dark"]{
+background:#111;
+color:#fff;
+}
+
+body[data-theme="dark"] button,
+body[data-theme="dark"] .btn{
+background:#333;
+color:#fff;
+}
+
+body[data-theme="dark"] button:hover{
+background:#555;
+}
+
+
+/* PINK THEME */
+
+body[data-theme="pink"]{
+background:#fff0f6;
+}
+
+body[data-theme="pink"] button,
+body[data-theme="pink"] .btn{
+background:#ff2d8d;
+color:#fff;
+}
+
+body[data-theme="pink"] button:hover{
+background:#e02178;
+}
+
+
+/* BLUE THEME */
+
+body[data-theme="blue"]{
+background:#f0f6ff;
+}
+
+body[data-theme="blue"] button,
+body[data-theme="blue"] .btn{
+background:#2979ff;
+color:#fff;
+}
+
+body[data-theme="blue"] button:hover{
+background:#1c5ed6;
+}
+
+
+/* ORANGE THEME */
+
+body[data-theme="orange"]{
+background:#fff6ef;
+}
+
+body[data-theme="orange"] button,
+body[data-theme="orange"] .btn{
+background:#ff7a00;
+color:#fff;
+}
+
+body[data-theme="orange"] button:hover{
+background:#e56d00;
+}
+
+
+/* YELLOW THEME */
+
+body[data-theme="yellow"]{
+background:#fffdf4;
+}
+
+body[data-theme="yellow"] button,
+body[data-theme="yellow"] .btn{
+background:#d4af37;
+color:#fff;
+}
+
+body[data-theme="yellow"] button:hover{
+background:#b9972d;
+}
 
 
 
@@ -342,9 +425,17 @@ body{
       <a href="terms&condition-policy.html" class="more-btn">
         <i class="fa-solid fa-file-contract"></i>
         Terms & Conditions
-     <a href="/vendor system 2.0/index.html">
+     <a href="/vendor-registration/">
       <i class="fa-solid fa-user-tie"></i>
       <span>Vendor</span>
+    </a>
+<a href="profile.html">
+      <i class="fa-solid fa-id-badge"></i>
+      <span>Profile</span>
+    </a>
+    <a href="settings.html">
+      <i class="fa-solid fa-circle-user"></i>
+      <span>Settings</span>
     </a>
 
       
@@ -422,6 +513,21 @@ body{
   </a>
 </div>
 
+<script src="offline.js"></script>
+<script>
 
+let savedTheme=localStorage.getItem("theme")
+
+if(savedTheme){
+
+document.body.setAttribute("data-theme",savedTheme)
+
+}
+
+</script>
+<script src="site-settings.js"></script>
+
+<script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+</body>
 </body>
 </html>

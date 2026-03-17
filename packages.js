@@ -1,3 +1,5 @@
+
+const loader = document.getElementById("loader");
 // ========================= Firebase Init =========================
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { getDatabase, ref, onValue, get, set, update } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
@@ -52,7 +54,7 @@ function renderStars(avgRating = 0, packageId = null) {
   for (let i = 1; i <= 5; i++) {
     starsHTML += `
       <i class="fa fa-star star ${i <= rounded ? "filled" : ""}"
-         ${packageId ? `onclick="submitRating('${packageId}', ${i})"` : ""}>
+         ${packageId ? `onclick="window.submitRating('${packageId}', ${i})"` : ""}>
       </i>`;
   }
 
@@ -66,97 +68,159 @@ function renderStars(avgRating = 0, packageId = null) {
   `;
 }
 
-// ========================= LIVE RATING SYSTEM =========================
 (function addPopupCSS(){
   if (document.getElementById("ratingPopupStyle")) return;
 
   const style = document.createElement("style");
   style.id = "ratingPopupStyle";
   style.innerHTML = `
-    .popup-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); display:flex; align-items:center; justify-content:center; z-index:99999; animation: fadeIn 0.2s ease;}
-    .popup-box { background: #0f172a; padding: 28px 35px; border-radius: 18px; text-align:center; color:#e2e8f0; min-width:280px; box-shadow: 0 20px 60px rgba(0,0,0,0.6); animation: popIn 0.25s ease; }
-    .popup-icon { font-size:38px; margin-bottom:10px;}
-    .popup-box h3 { margin:0; font-size:20px; color:#38bdf8;}
-    .popup-box p { margin-top:8px; font-size:14px; color:#cbd5e1;}
-    @keyframes popIn { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-    @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+    .popup-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.6);display:flex;align-items:center;justify-content:center;z-index:99999}
+    .popup-box{background:#0f172a;padding:28px 35px;border-radius:18px;text-align:center;color:#e2e8f0;min-width:280px}
+    .popup-icon{font-size:38px;margin-bottom:10px}
   `;
   document.head.appendChild(style);
 })();
 
-function showPopup(icon, title, message) {
-  if (document.getElementById("customPopup")) return;
-  const popup = document.createElement("div");
-  popup.id = "customPopup";
-  popup.innerHTML = `
-    <div class="popup-overlay">
-      <div class="popup-box">
-        <div class="popup-icon">${icon}</div>
-        <h3>${title}</h3>
-        <p>${message}</p>
-      </div>
-    </div>`;
+function showPopup(icon,title,message){
+  if(document.getElementById("customPopup")) return;
+
+  const popup=document.createElement("div");
+  popup.id="customPopup";
+  popup.innerHTML=`
+  <div class="popup-overlay">
+  <div class="popup-box">
+  <div class="popup-icon">${icon}</div>
+  <h3>${title}</h3>
+  <p>${message}</p>
+  </div></div>`;
   document.body.appendChild(popup);
-  setTimeout(() => popup.remove(), 2500);
+  setTimeout(()=>popup.remove(),2500);
 }
 
-// ===== FINAL submitRating FUNCTION =====
-window.submitRating = async function (packageId, rating) {
-  if (!currentUser) {
-    showPopup("⚠️", "Login Required", "Please login to rate this package");
+window.submitRating = async function(packageId,rating){
+
+  if(!currentUser){
+    showPopup("⚠️","Login Required","Please login to rate this package");
     return;
   }
 
-  const userId = currentUser.uid;
-  const userRatingRef = ref(db, `packageRatings/${packageId}/${userId}`);
-  const existing = await get(userRatingRef);
-  if (existing.exists()) {
-    showPopup("⭐", "Already Rated", "You have already rated this package");
-    return;
-  }
+  try{
 
-  await set(userRatingRef, { rating, userId, createdAt: Date.now() });
-  const allRatingsSnap = await get(ref(db, `packageRatings/${packageId}`));
-  let total = 0, count = 0;
-  allRatingsSnap.forEach(child => { total += child.val().rating; count++; });
-  const avg = count > 0 ? total / count : 0;
-  await update(ref(db, `packages/${packageId}`), { rating: avg });
-  showPopup("⭐", "Thank You!", "Thank you for your valuable feedback");
+    const userId=currentUser.uid;
+
+    const userRatingRef=ref(db,`packageRatings/${packageId}/${userId}`);
+    const existing=await get(userRatingRef);
+
+    if(existing.exists()){
+      showPopup("⭐","Already Rated","You have already rated this package");
+      return;
+    }
+
+    await set(userRatingRef,{
+      rating:rating,
+      userId:userId,
+      createdAt:Date.now()
+    });
+
+    const allRatingsSnap=await get(ref(db,`packageRatings/${packageId}`));
+
+    let total=0;
+    let count=0;
+
+    if(allRatingsSnap.exists()){
+      allRatingsSnap.forEach(child=>{
+        total+=child.val().rating;
+        count++;
+      });
+    }
+
+    const avg=count>0?total/count:0;
+
+    await update(ref(db,`packages/${packageId}`),{rating:avg});
+
+    if(packagesData && packagesData[packageId]){
+      packagesData[packageId].rating=avg;
+      renderPackages(packagesData);
+    }
+
+    showPopup("⭐","Thank You!","Thank you for your valuable feedback");
+
+  }catch(err){
+    console.error(err);
+    showPopup("❌","Error","Rating failed");
+  }
 };
 
-// ========================= Search + City Filter =========================
-function populateCities(data) {
-  if (!cityFilter) return;
+function populateCities(data){
+
+  if(!cityFilter) return;
+
   const cities = new Set();
-  Object.values(data).forEach(pkg => { if(pkg.city) cities.add(pkg.city); });
+
+  Object.values(data).forEach(pkg=>{
+
+    if(pkg.availableCities){
+      Object.keys(pkg.availableCities).forEach(city=>{
+        cities.add(city);
+      });
+    }
+
+  });
+
   cityFilter.innerHTML = `<option value="">All Cities</option>`;
-  cities.forEach(city => cityFilter.innerHTML += `<option value="${city}">${city}</option>`);
+
+  cities.forEach(city=>{
+    const option = document.createElement("option");
+    option.value = city;
+    option.textContent = city;
+    cityFilter.appendChild(option);
+  });
+
 }
 
-function applyFilters() {
-  if (!searchInput && !cityFilter) return;
+function applyFilters(){
+
   const text = searchInput?.value.toLowerCase().trim() || "";
   const city = cityFilter?.value || "";
+
   const filtered = {};
-  Object.keys(packagesData).forEach(id => {
+
+  Object.keys(packagesData).forEach(id=>{
+
     const pkg = packagesData[id];
-    if (pkg.status !== "active") return;
+
+    if(pkg.status !== "active") return;
+
     const nameMatch = pkg.name?.toLowerCase().includes(text);
     const priceMatch = String(pkg.price || "").includes(text);
-    const cityMatch = !city || pkg.city === city;
-    if ((!text || nameMatch || priceMatch) && cityMatch) filtered[id] = pkg;
+
+    let cityMatch = true;
+
+    // city select hai tabhi filter lage
+    if(city){
+     cityMatch = pkg.availableCities && pkg.availableCities[city];
+    }
+
+    if((!text || nameMatch || priceMatch) && cityMatch){
+      filtered[id] = pkg;
+    }
+
   });
+
   renderPackages(filtered);
 }
 
-searchInput?.addEventListener("input", applyFilters);
-cityFilter?.addEventListener("change", applyFilters);
-
+searchInput?.addEventListener("input",applyFilters);
+cityFilter?.addEventListener("change",applyFilters);
 // ========================= Load Packages =========================
 onValue(ref(db, "packages"), snapshot => {
+
+  loader.style.display = "none";   // 👈 loader hide
+
   packagesData = snapshot.val() || {};
   populateCities(packagesData);
-  renderPackages(packagesData);
+  applyFilters();
+
 });
 
 // ========================= Render Packages =========================
@@ -346,3 +410,16 @@ async function fillCurrentAddress() {
 
 // Optional: manual use current location button
 document.getElementById("getLocation")?.addEventListener("click", fillCurrentAddress);
+
+
+
+
+
+function toggleSeo(){
+  const text = document.querySelector(".seo-short");
+  const btn = document.querySelector(".read-more");
+
+  text.classList.toggle("active");
+
+  btn.innerText = text.classList.contains("active") ? "Read Less" : "Read More";
+}

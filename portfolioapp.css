@@ -318,3 +318,185 @@ button, input, select, textarea {
   from { opacity: 0; transform: scale(0.95); }
   to { opacity: 1; transform: scale(1); }
 }
+/* ===== HERO BANNER ===== */
+
+.hero{
+position:relative;
+width:100%;
+overflow:hidden;
+background:#000;
+}
+
+/* Banner Image */
+
+.hero-img{
+width:100%;
+height:auto;
+display:block;
+object-fit:cover;
+}
+
+/* Overlay */
+
+.hero::after{
+content:"";
+position:absolute;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.35);
+}
+
+/* Text Content */
+
+.hero-content{
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+color:#fff;
+text-align:center;
+width:90%;
+z-index:2;
+}
+
+.hero-content h1{
+font-size:28px;
+font-weight:600;
+margin-bottom:6px;
+}
+
+.hero-content p{
+font-size:13px;
+}
+
+/* ===== MOBILE FIX ===== */
+
+@media(max-width:768px){
+
+.hero{
+aspect-ratio:16/9;
+}
+
+.hero-img{
+width:100%;
+height:100%;
+object-fit:cover;
+}
+
+.hero-content h1{
+font-size:24px;
+}
+
+.hero-content p{
+font-size:12px;
+}
+
+}
+
+/* ===== SMALL PHONES ===== */
+
+@media(max-width:420px){
+
+.hero{
+aspect-ratio:16/10;
+}
+
+.hero-content h1{
+font-size:20px;
+}
+
+.hero-content p{
+font-size:11px;
+}
+
+}
+
+
+
+
+/* DARK THEME */
+
+body[data-theme="dark"]{
+background:#111;
+color:#fff;
+}
+
+body[data-theme="dark"] button,
+body[data-theme="dark"] .btn{
+background:#333;
+color:#fff;
+}
+
+body[data-theme="dark"] button:hover{
+background:#555;
+}
+
+
+/* PINK THEME */
+
+body[data-theme="pink"]{
+background:#fff0f6;
+}
+
+body[data-theme="pink"] button,
+body[data-theme="pink"] .btn{
+background:#ff2d8d;
+color:#fff;
+}
+
+body[data-theme="pink"] button:hover{
+background:#e02178;
+}
+
+
+/* BLUE THEME */
+
+body[data-theme="blue"]{
+background:#f0f6ff;
+}
+
+body[data-theme="blue"] button,
+body[data-theme="blue"] .btn{
+background:#2979ff;
+color:#fff;
+}
+
+body[data-theme="blue"] button:hover{
+background:#1c5ed6;
+}
+
+
+/* ORANGE THEME */
+
+body[data-theme="orange"]{
+background:#fff6ef;
+}
+
+body[data-theme="orange"] button,
+body[data-theme="orange"] .btn{
+background:#ff7a00;
+color:#fff;
+}
+
+body[data-theme="orange"] button:hover{
+background:#e56d00;
+}
+
+
+/* YELLOW THEME */
+
+body[data-theme="yellow"]{
+background:#fffdf4;
+}
+
+body[data-theme="yellow"] button,
+body[data-theme="yellow"] .btn{
+background:#d4af37;
+color:#fff;
+}
+
+body[data-theme="yellow"] button:hover{
+background:#b9972d;
+}

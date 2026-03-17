@@ -213,7 +213,13 @@ footer a { color:#1e40af; }
 
 
 
-
+<script src="offline.js"></script>
+<script>
+let savedTheme = localStorage.getItem("theme");
+if(savedTheme){
+document.body.setAttribute("data-theme", savedTheme);
+}
+</script>
 
 </body>
 </html>

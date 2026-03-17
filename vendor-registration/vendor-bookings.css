@@ -212,3 +212,116 @@ tr.data-row:hover{
   transform:translateY(-2px);
   box-shadow:0 18px 45px rgba(212,175,55,.55);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ================= ADVANCED MOBILE RESPONSIVE ================= */
+
+/* Tablet & Small Screens */
+@media (max-width:768px){
+
+  body{
+    padding:15px;
+  }
+
+  #bookingSearch{
+    width:100%;
+    margin-bottom:18px;
+  }
+
+  table{
+    display:block;
+    overflow-x:auto;
+    white-space:nowrap;
+    border-radius:14px;
+  }
+
+  th, td{
+    padding:10px;
+    font-size:12px;
+  }
+
+  .view-btn{
+    padding:6px 12px;
+    font-size:12px;
+  }
+
+  #detailBox{
+    padding:20px;
+  }
+}
+
+
+/* Small Phones – Convert Table to Card Layout */
+@media (max-width:520px){
+
+  table, thead, tbody, th, td, tr{
+    display:block;
+    width:100%;
+  }
+
+  thead{
+    display:none;
+  }
+
+  tr.data-row{
+    background:#0f172a;
+    margin-bottom:14px;
+    border-radius:14px;
+    padding:14px;
+    box-shadow:0 15px 35px rgba(0,0,0,.4);
+  }
+
+  td{
+    border:none;
+    padding:6px 0;
+    font-size:13px;
+    display:flex;
+    justify-content:space-between;
+  }
+
+  td::before{
+    content:attr(data-label);
+    font-weight:600;
+    color:var(--muted);
+  }
+
+  .view-btn{
+    width:100%;
+    margin-top:8px;
+  }
+
+  #detailBox{
+    padding:18px;
+    border-radius:16px;
+  }
+
+  #detailBox h3{
+    font-size:16px;
+  }
+
+  #detailBox h4{
+    font-size:14px;
+  }
+
+  #detailBox p,
+  #detailBox ul li{
+    font-size:13px;
+  }
+
+  .back-btn{
+    width:100%;
+    text-align:center;
+  }
+}

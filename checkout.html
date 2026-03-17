@@ -63,6 +63,71 @@
 </section>
 
 <script type="module" src="checkout.js"></script>
+<script src="offline.js"></script>
+<<script>
 
+let savedTheme=localStorage.getItem("theme")
+
+if(savedTheme){
+
+document.body.setAttribute("data-theme",savedTheme)
+
+}
+
+</script>
+<script src="site-settings.js"></script>
+
+<script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+</body>
+</script>
+<!-- Payment Popup -->
+<!-- Tumhara popup HTML -->
+<div id="paymentPopup" class="payment-popup">
+  <div class="popup-box">
+    <div id="popupIcon" class="popup-icon"></div>
+    <h2 id="popupTitle"></h2>
+    <p id="popupText"></p>
+    <button onclick="closePopup()" class="popup-btn">OK</button>
+  </div>
+</div>
+
+<!-- JavaScript -->
+<script>
+
+function showPaymentPopup(type){
+
+let popup = document.getElementById("paymentPopup");
+let icon = document.getElementById("popupIcon");
+let title = document.getElementById("popupTitle");
+let text = document.getElementById("popupText");
+
+popup.style.display = "flex";
+
+if(type === "success"){
+
+icon.innerHTML = "✔";
+icon.className = "popup-icon popup-success";
+
+title.innerText = "Payment Successful";
+text.innerText = "Your advance payment has been completed successfully.";
+
+}else{
+
+icon.innerHTML = "✖";
+icon.className = "popup-icon popup-fail";
+
+title.innerText = "Payment Failed";
+text.innerText = "Something went wrong. Please try again.";
+
+}
+
+}
+
+function closePopup(){
+document.getElementById("paymentPopup").style.display="none";
+window.location.href = "mybookings.html";
+}
+
+</script>
 </body>
 </html>

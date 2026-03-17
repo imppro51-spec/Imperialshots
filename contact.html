@@ -101,7 +101,7 @@
     </a>
   </li>
 <li>
-    <a href="/vendor system 2.0/index.html">
+    <a href="/vendor-registration/">
       <i class="fa-solid fa-user-tie"></i>
       <span>Vendor</span>
     </a>
@@ -167,8 +167,9 @@
 
   <div class="info">
     <h3>Get In Touch</h3>
-    <p>📍 Sikar / Jaipur</p>
-    <p>📞 9772-509-456</p>
+    <p>📍 Sikar / Jaipur / Jhunjhunu</p>
+    
+    <p>📞 +91-9680063684</p>
     <p>📧 imperialshots@gmail.com</p>
     <p style="margin-top:20px">Available for weddings, pre-weddings & commercial shoots.</p>
   </div>
@@ -177,54 +178,90 @@
 
 
 <footer class="site-footer">
-  <div class="footer-container">
+  <div class="footer-top">
+    <!-- Newsletter -->
+    <div class="footer-newsletter">
+      <h3>Don't Miss Out</h3>
+      <p>Sign up for the latest wedding news, packages, and offers</p>
+      <form class="newsletter-form">
+        <input type="email" placeholder="Enter Your Email Address" required>
+        <input type="date" placeholder="Birthday">
+        <button type="submit">SIGN UP</button>
+      </form>
+    </div>
 
-    <!-- BRAND -->
-     <div class="footer-box footer-brand">
-  <img src="original.png" alt="Imperial Shots Logo" class="footer-logo-img">
+    <!-- Quick Links -->
+    <div class="footer-links">
+      <div class="link-column">
+        <h4>Vendor Portal</Portal></h4>
+        <ul>
+          <li><a href="/vendor-registration/index.html">Vendor Registation</a></li>
+          <li><a href="/vendor-registration/vendor-login.html">Vendor Login </a></li>
+        </ul>
+      </div>
 
-  <p>
-    Premium wedding & pre-wedding cinematography capturing timeless
-    emotions with a cinematic touch.
-  </p>
-      <div class="social">
-        <a href="https://www.instagram.com/officialimperialshots" target="_blank" aria-label="Instagram">
-          <i class="fab fa-instagram"></i>
-        </a>
-        <a href="https://www.facebook.com/officialimperialshots" target="_blank" aria-label="Facebook">
-          <i class="fab fa-facebook-f"></i>
-        </a>
+      <div class="link-column">
+        <h4>Customer Service</h4>
+        <ul>
+          <li><a href="contact.html">Contact Us</a></li>
+          <li><a href="profile.html">My Account</a></li>
+          <!-- <li><a href="storelocator.html">Store Locator</a></li>
+          <li><a href="redeem.html">Redeem rewards</a></li> -->
+        </ul>
+      </div>
+
+      <div class="link-column">
+        <h4>More to Explore</h4>
+        <ul>
+          <li><a href="privacy-policy.html">Privacy Policy</a></li>
+          <li><a href="payment-policy.html">Payments Policy</a></li>
+          <li><a href="service-agreement.html">Service Agreements </a></li>
+           <li><a href="faqs.html"> FAQs </a></li>
+            <li><a href="terms&condition-policy.html"> Terms & Conditions </a></li>
+        </ul>
       </div>
     </div>
-
-    <!-- QUICK LINKS -->
-    <div class="footer-box">
-      <h4>Quick Links</h4>
-      <ul>
-          <li><a href="privacy-policy.html">Privacy Policy</a></li>
-          <li><a href="terms&condition-policy.html">Terms & Conditions</a></li>
-          <li><a href="faqs.html">FAQs</a></li>
-          <li><a href="helpandsupport.html">Help & Support</a></li>
-           <li><a href="service-agreement.html">Service-Agreement-Policy</a></li>
-            <li><a href="payment-policy.html">Payments-policy</a></li>
-        </ul>
-    </div>
-
-    <!-- CONTACT -->
-    <div class="footer-box">
-      <h4>Contact Info</h4>
-      <p>📍 Sikar, Rajasthan, India</p>
-      <p>📧 imperialshots@gmail.com</p>
-      <p>📞 +91 97725 09456</p>
-    </div>
-
   </div>
 
+  <!-- Social Icons -->
+  <div class="footer-social">
+    <a href="https://www.instagram.com/officialimperialshots" target="_blank"><i class="fab fa-instagram"></i></a>
+    <a href="https://www.facebook.com/share/1GXkXvt9BU/" target="_blank"><i class="fab fa-facebook-f"></i></a>
+    <a href="#" target="_blank"><i class="fab fa-youtube"></i></a>
+    <a href="#" target="_blank"><i class="fab fa-twitter"></i></a>
+  </div>
+
+  <!-- Partners & Payment -->
+  <div class="footer-partners">
+    <h4>Our Partners</h4>
+    <div class="partners-logos">
+      <img src="partner1.png" alt="Partner1">
+      <img src="partner2.png" alt="Partner2">
+      <img src="partner3.png" alt="Partner3">
+    </div>
+  </div>
+
+  <div class="footer-payments">
+    <h4>Payments Accepted</h4>
+    <div class="payment-icons">
+      <img src="visa.jfif" alt="Visa">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/Mastercard-logo.png" alt="Mastercard">
+      <img src="rupay.png" alt="RuPay">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/UPI-Logo.png" alt="UPI">
+      <img src="paytm.png" alt="Paytm">
+    </div>
+  </div>
+
+  <!-- Map -->
+  <div class="footer-map">
+    <img src="rajasthan1.jpg" alt="India Map with Rajasthan Highlight">
+  </div>
+
+  <!-- Footer Bottom -->
   <div class="footer-bottom">
-    © 2026 Imperial Shots. All Rights Reserved.
+    <p>© 2026 Imperial Shots. All Rights Reserved.</p>
   </div>
 </footer>
-
 
 
 <script type="module" src="firebase.js"></script>
@@ -303,5 +340,21 @@
 <script type="module" src="contact.js"></script>
 <script src="mobile-menu.js"></script>
 <script src="auth-check.js"></script>
+<script src="offline.js"></script>
+<script>
+
+let savedTheme=localStorage.getItem("theme")
+
+if(savedTheme){
+
+document.body.setAttribute("data-theme",savedTheme)
+
+}
+
+</script>
+<script src="site-settings.js"></script>
+
+<script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+</body>
 </body>
 </html>

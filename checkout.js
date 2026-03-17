@@ -18,6 +18,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 const auth = getAuth(app);
+
 /* ================= GET CHECKOUT DATA ================= */
 
 let checkoutData = JSON.parse(sessionStorage.getItem("checkoutData"));
@@ -38,7 +39,6 @@ function displayCheckout() {
 
   coPackage.innerText = checkoutData.packageName || "-";
 
-  // Final amount after coupon
   const finalAmount = Number(checkoutData.totalAmount) || originalAmount;
 
   coTotal.innerText = finalAmount.toFixed(2);
@@ -93,6 +93,8 @@ applyCouponBtn.addEventListener("click", async () => {
     if (total < 0) total = 0;
 
     checkoutData.totalAmount = parseFloat(total.toFixed(2));
+    checkoutData.discount = savedAmount;
+
     sessionStorage.setItem("checkoutData", JSON.stringify(checkoutData));
 
     displayCheckout();
@@ -133,9 +135,7 @@ function injectCheckbox() {
 
 injectCheckbox();
 
-/* ================= PAYMENT ================= */
-
-/* ================= PAYMENT ================= */
+/* ================= ADVANCE PAYMENT ================= */
 
 async function startSecureAdvancePayment() {
 
@@ -145,63 +145,52 @@ async function startSecureAdvancePayment() {
     return;
   }
 
-  if (!checkoutData || !checkoutData.totalAmount) {
-    alert("⚠️ Invalid booking data");
-    return;
-  }
-
   try {
 
-    const tempBookingId = "TEMP" + Date.now();
+    const tempId = "TEMP" + Date.now();
 
-    // 1️⃣ Save temporary booking
-    await set(ref(db, `tempBookings/${tempBookingId}`), {
-      ...checkoutData,
-      userId: user.uid,
-      status: "pending_payment",
-      createdAt: Date.now()
-    });
-
-    // 2️⃣ Create Razorpay order
+    // ✅ Create Order (backend expects bookingId)
     const response = await fetch(
       "https://imperial-backend1-pb7k.onrender.com/create-order",
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          bookingId: tempBookingId,
+          bookingId: tempId,
           totalAmount: checkoutData.totalAmount,
+          discount: checkoutData.discount || 0,
           paymentType: "advance"
         })
       }
     );
 
     const result = await response.json();
+    console.log("Create Order Response:", result);
 
-    if (!result?.order?.id || !result?.key) {
+    if (!result.success || !result.orderId) {
       alert("❌ Order creation failed");
       return;
     }
 
     const options = {
       key: result.key,
-      amount: result.order.amount,
-      currency: "INR",
+      amount: result.amount,
+      currency: result.currency,
       name: "Imperial Shots",
       description: "Advance Booking Payment",
-      order_id: result.order.id,
+      order_id: result.orderId,
 
       handler: async function (paymentResponse) {
 
         try {
 
-          const { 
-            razorpay_payment_id, 
-            razorpay_order_id, 
-            razorpay_signature 
+          const {
+            razorpay_payment_id,
+            razorpay_order_id,
+            razorpay_signature
           } = paymentResponse;
 
-          // 3️⃣ Verify Payment (FIXED)
+          // ✅ Verify Payment
           const verifyRes = await fetch(
             "https://imperial-backend1-pb7k.onrender.com/verify-payment",
             {
@@ -211,7 +200,7 @@ async function startSecureAdvancePayment() {
                 razorpay_payment_id,
                 razorpay_order_id,
                 razorpay_signature,
-                bookingId: tempBookingId,
+                bookingId: tempId,
                 paymentType: "advance"
               })
             }
@@ -224,50 +213,51 @@ async function startSecureAdvancePayment() {
             return;
           }
 
-          // 4️⃣ Create Final Booking
+          // ✅ SAVE BOOKING AFTER SUCCESS
+
           const finalBookingId = "IMP" + Date.now();
-          const advanceAmount = (checkoutData.totalAmount * 0.2).toFixed(2);
+          const totalAmount = Number(checkoutData.totalAmount);
+          const advanceAmount = Number((totalAmount * 0.2).toFixed(2));
 
           await set(ref(db, `bookings/${finalBookingId}`), {
+
             bookingID: finalBookingId,
             userId: user.uid,
+
             ...checkoutData,
+
+            totalAmount: totalAmount,
             advanceAmount: advanceAmount,
-            status: "advance_paid",
+            paidTotal: advanceAmount,
+            remainingAmount: totalAmount - advanceAmount,
+
             paidAdvance: true,
             paidMid: false,
             paidFinal: false,
-            createdAt: Date.now()
+
+            status: "advance_paid",
+            createdAt: Date.now(),
+            viewedByAdmin: false
           });
 
-          // 5️⃣ Save Payment History
-          await set(ref(db, `paymentHistory/${finalBookingId}/advance`), {
-            amount: advanceAmount,
-            razorpayPaymentId: razorpay_payment_id,
-            razorpayOrderId: razorpay_order_id,
-            razorpaySignature: razorpay_signature,
-            paidAt: Date.now()
-          });
-
-          // 6️⃣ Delete Temp Booking
-          await set(ref(db, `tempBookings/${tempBookingId}`), null);
+          await set(
+            ref(db, `bookings/${finalBookingId}/payments/${Date.now()}`),
+            {
+              amount: advanceAmount,
+              paidAt: Date.now(),
+              paymentId: razorpay_payment_id,
+              type: "advance"
+            }
+          );
 
           sessionStorage.removeItem("checkoutData");
 
-          alert("🎉 Advance Payment Successful!");
-
-          // 7️⃣ Redirect
+showPaymentPopup("success");
           window.location.href = "mybookings.html";
 
         } catch (err) {
           console.error("Verification error:", err);
           alert("Verification error");
-        }
-      },
-
-      modal: {
-        ondismiss: function () {
-          console.log("Payment popup closed");
         }
       },
 
@@ -279,7 +269,7 @@ async function startSecureAdvancePayment() {
 
   } catch (err) {
     console.error("Payment Failed:", err);
-    alert("❌ Payment Failed");
+    showPaymentPopup("fail");
   }
 }
 

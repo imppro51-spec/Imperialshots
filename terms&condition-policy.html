@@ -208,6 +208,12 @@ footer a { color:#1e40af; }
 <p>Address: Sikar, Rajasthan, India</p>
 <p>© 2026 Imperial Shots. All rights reserved.</p>
 </footer>
-
+<script src="offline.js"></script>
+<script>
+let savedTheme = localStorage.getItem("theme");
+if(savedTheme){
+document.body.setAttribute("data-theme", savedTheme);
+}
+</script>
 </body>
 </html>

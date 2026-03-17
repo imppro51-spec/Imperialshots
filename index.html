@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Imperial Shots – Cinematic Wedding Films</title>
+  <title>Best Wedding Videographer in Jaipur | Pre Wedding Shoot Jaipur | Imperial Shots</title>
 
   <!-- Google Font -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -26,29 +26,101 @@
 <meta name="theme-color" content="#111111">
 <link rel="apple-touch-icon" href="/icon-192.png">
 
+<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
 
+<script>
+window.OneSignalDeferred = window.OneSignalDeferred || [];
+
+OneSignalDeferred.push(async function(OneSignal) {
+
+await OneSignal.init({
+  appId: "d92237e5-e026-4929-a712-02d7f56b8b8e",
+
+  notifyButton: {
+    enable: true
+  },
+
+  promptOptions: {
+    slidedown: {
+      enabled: true
+    }
+  }
+
+});
+
+});
+</script>
 
 <link rel="stylesheet" href="indexapp.css" media="(max-width:768px)">
 
 
 <!-- Firebase + Forms connection -->
 <script src="firebase.js"></script>
+<link rel="stylesheet" href="cookie-consent.css">
+
+<!-- SEO Meta Tags -->
+<meta name="description" content="Imperial Shots - Best wedding videographers in Jaipur, Sikar, Jhunjhunu. Pre wedding shoot, cinematic wedding films, makeup artist, mehndi artist, event shooting services in Rajasthan.">
+
+<meta name="keywords" content="
+best videographer in jaipur,
+best wedding videographer in jaipur,
+pre wedding shoot jaipur,
+wedding videography jaipur,
+cinematic wedding film jaipur,
+pre wedding photographer jaipur,
+event videographer jaipur,
+videographer in sikar,
+videographer in jhunjhunu,
+best makeup artist jaipur,
+mehndi artist jaipur,
+wedding photographer sikar,
+pre wedding shoot sikar,
+event shooting jhunjhunu,
+hire videographer jaipur,
+hire photographer jaipur,
+best videography services rajasthan,
+how to get clients as videographer in jaipur,
+how to get photography clients in sikar,
+how to get wedding clients jhunjhunu,
+imperial shots videography,
+imperialshots wedding films
+">
+
+<meta name="author" content="Imperial Shots">
+<meta name="robots" content="index, follow">
+
+<!-- Open Graph for social -->
+<meta property="og:title" content="Imperial Shots – Cinematic Wedding Films">
+<meta property="og:description" content="Best wedding videography & pre wedding shoot services in Jaipur, Sikar & Jhunjhunu.">
+<meta property="og:image" content="https://imperialshots.in/banner1.jpeg">
+<meta property="og:url" content="https://imperialshots.in">
+<meta property="og:type" content="website">
+<meta name="geo.region" content="IN-RJ">
+<meta name="geo.placename" content="Jaipur, Sikar, Jhunjhunu">
+<meta name="geo.position" content="26.9124;75.7873">
+<meta name="ICBM" content="26.9124, 75.7873">
+<meta name="description" content="Imperial Shots - Cinematic wedding videography, pre wedding shoot, photography, makeup artist & mehndi artist services in Jaipur, Sikar & Jhunjhunu.">
+
+<meta name="keywords" content="imperialshots, imperial shots, imperialshots jaipur, imperial shots videography, imperialshots wedding films">
 
 </head>
 
 <body>
-
-  <header>
+  
+<div id="google_translate_element" style="display:none"></div>
+ <header>
   <div class="nav">
     <div class="logo">
       <img src="original.png" alt="Logo">
     </div>
 
-    
-
-    
-
-    <button class="btn quote-btn">Get A Quote</button>
+    <!-- Right side buttons -->
+    <div class="nav-right">
+      <a href="spinner.html" title="Spin & Rewards">
+        <img src="spinner1.png" alt="Spin" style="height:32px; width:32px; margin-right:10px; cursor:pointer;">
+      </a>
+      <button class="btn quote-btn">Get A Quote</button>
+    </div>
   </div>
 
   <!-- Mobile Menu (hidden initially) -->
@@ -61,13 +133,9 @@
     <a href="contact.html">Contact</a>
     <a href="login.html">Signup</a>
     <a href="mybookings.html">My Bookings</a>
-
-
-
-<div class="app-container">
-  <header class="app-header">
-    Imperial Shots
-  </header>
+    <a href="spin.html">Spin & Rewards</a> <!-- Mobile menu link -->
+  </div>
+</header>
 
   <main class="app-main" id="packagesContainer">
     <!-- JS will inject packages here -->
@@ -154,9 +222,15 @@
     </a>
   </li>
  <li>
-    <a href="/vendor system 2.0/index.html">
+    <a href="/vendor-registration/">
       <i class="fa-solid fa-user-tie"></i>
       <span>Vendor</span>
+    </a>
+  </li>
+  <li>
+    <a href="settings.html">
+     <i class="fa-solid fa-circle-user"></i>
+      <span>Settings </span>
     </a>
   </li>
 </ul>
@@ -181,9 +255,7 @@
     <a href="packages.html" class="slide active">
       <img src="banner1.jpeg" alt="Banner 1">
       <div class="slide-content">
-        <h1>Your Dream Wedding</h1>
-        <p>Capturing Memories Cinematically</p>
-        <button>View Portfolio</button>
+        
       </div>
     </a>
 
@@ -191,17 +263,15 @@
     <a href="packages.html" class="slide">
       <img src="banner2.jpeg" alt="Banner 2">
       <div class="slide-content">
-        <h1>Pre Wedding Shoots</h1>
-        <p>Make Love Stories Cinematic</p>
+       
       </div>
     </a>
 
     <!-- Slide 3 -->
     <a href="packages.html" class="slide">
-      <img src="banner3.png" alt="Banner 3">
+      <img src="vendor-registration banner.png" alt="Banner 3">
       <div class="slide-content">
-        <h1>Premium Films</h1>
-        <p>Professional Wedding Coverage</p>
+       
       </div>
     </a>
 
@@ -311,55 +381,113 @@
     </div>
   </section>
 
-  <footer class="site-footer">
-    <div class="footer-container">
+ <footer class="site-footer">
+  <div class="footer-top">
+    <!-- Newsletter -->
+    <div class="footer-newsletter">
+      <h3>Don't Miss Out</h3>
+      <p>Sign up for the latest wedding news, packages, and offers</p>
+      <form class="newsletter-form">
+        <input type="email" placeholder="Enter Your Email Address" required>
+        <input type="date" placeholder="Birthday">
+        <button type="submit">SIGN UP</button>
+      </form>
+    </div>
 
-
-
-      <!-- BRAND -->
-      <div class="footer-box footer-brand">
-        <img src="original.png" alt="Imperial Shots Logo" class="footer-logo-img">
-
-        <p>
-          Premium wedding & pre-wedding cinematography capturing timeless
-          emotions with a cinematic touch.
-        </p>
-        <div class="social">
-          <a href="https://www.instagram.com/officialimperialshots" target="_blank" aria-label="Instagram">
-            <i class="fab fa-instagram"></i>
-          </a>
-          <a href="https://www.facebook.com/officialimperialshots" target="_blank" aria-label="Facebook">
-            <i class="fab fa-facebook-f"></i>
-          </a>
-        </div>
-      </div>
-
-      <!-- QUICK LINKS -->
-      <div class="footer-box">
-        <h4>Quick Links</h4>
+    <!-- Quick Links -->
+    <div class="footer-links">
+      <div class="link-column">
+        <h4>Vendor Portal</Portal></h4>
         <ul>
-          <li><a href="privacy-policy.html">Privacy Policy</a></li>
-          <li><a href="terms&condition-policy.html">Terms & Conditions</a></li>
-          <li><a href="faqs.html">FAQs</a></li>
-          <li><a href="helpandsupport.html">Help & Support</a></li>
-           <li><a href="service-agreement.html">Service-Agreement-Policy</a></li>
-            <li><a href="payment-policy.html">Payments-policy</a></li>
+          <li><a href="/vendor-registration/index.html">Vendor Registation</a></li>
+          <li><a href="/vendor-registration/vendor-login.html">Vendor Login </a></li>
+           <li><a href="/carrier-portel/index.html">Carrer </a></li>
         </ul>
       </div>
 
-      <!-- CONTACT -->
-      <div class="footer-box">
-        <h4>Contact Info</h4>
-        <p>📍 Sikar, Rajasthan, India</p>
-        <p>📧 imperialshots@gmail.com</p>
-        <p>📞 +91 97725 09456</p>
+      <div class="link-column">
+        <h4>Customer Service</h4>
+        <ul>
+          <li><a href="contact.html">Contact Us</a></li>
+          <li><a href="profile.html">My Account</a></li>
+          <!-- <li><a href="storelocator.html">Store Locator</a></li>
+          <li><a href="redeem.html">Redeem rewards</a></li> -->
+        </ul>
       </div>
 
+      <div class="link-column">
+        <h4>More to Explore</h4>
+        <ul>
+          <li><a href="privacy-policy.html">Privacy Policy</a></li>
+          <li><a href="payment-policy.html">Payments Policy</a></li>
+          <li><a href="service-agreement.html">Service Agreements </a></li>
+           <li><a href="faqs.html"> FAQs </a></li>
+            <li><a href="terms&condition-policy.html"> Terms & Conditions </a></li>
+        </ul>
+      </div>
     </div>
+  </div>
 
-    <div class="footer-bottom">
-      © 2026 Imperial Shots. All Rights Reserved.
+  <!-- Social Icons -->
+  <div class="footer-social">
+    <a href="https://www.instagram.com/officialimperialshots" target="_blank"><i class="fab fa-instagram"></i></a>
+    <a href="https://www.facebook.com/share/1GXkXvt9BU/" target="_blank"><i class="fab fa-facebook-f"></i></a>
+    <a href="#" target="_blank"><i class="fab fa-youtube"></i></a>
+    <a href="#" target="_blank"><i class="fab fa-twitter"></i></a>
+  </div>
+
+  <!-- Partners & Payment -->
+  <div class="footer-partners">
+    <h4>Our Partners</h4>
+    <div class="partners-logos">
+      <img src="partner1.png" alt="Partner1">
+      <img src="partner2.png" alt="Partner2">
+      <img src="partner3.png" alt="Partner3">
     </div>
+  </div>
+
+  <div class="footer-payments">
+    <h4>Payments Accepted</h4>
+    <div class="payment-icons">
+      <img src="visa.jfif" alt="Visa">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/Mastercard-logo.png" alt="Mastercard">
+      <img src="rupay.png" alt="RuPay">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/UPI-Logo.png" alt="UPI">
+      <img src="paytm.png" alt="Paytm">
+    </div>
+  </div>
+
+  <!-- Map -->
+  <div class="footer-map">
+    <img src="rajasthan1.jpg" alt="India Map with Rajasthan Highlight">
+  </div>
+
+  <!-- Footer Bottom -->
+  <div class="footer-bottom">
+    <p>© 2026 Imperial Shots. All Rights Reserved.</p>
+  </div>
+</footer>
+    <div style="display:none">
+best videographer in jaipur,
+pre wedding shoot jaipur,
+wedding videographer sikar,
+wedding videographer jhunjhunu,
+best makeup artist jaipur,
+mehndi artist jaipur,
+event videography jaipur,
+cinematic wedding films jaipur,
+how to get clients as videographer in jaipur,
+how to get photography clients in sikar
+
+<div style="display:none">
+imperialshots  
+imperial shots  
+imperialshots jaipur  
+imperialshots videography  
+imperialshots wedding films  
+imperialshots rajasthan
+</div>
+</div>
   </footer>
 
 
@@ -489,7 +617,9 @@ if ("serviceWorker" in navigator) {
   .then(()=>console.log("Service Worker Registered"));
 }
 </script>
-<button onclick="installApp()">Install App</button>
+<button class="install-btn" onclick="installApp()">
+<i class="fa-solid fa-download"></i> Install App
+</button>
 <script>
 let deferredPrompt;
 
@@ -575,7 +705,36 @@ track.addEventListener("touchend",e=>{
   goSlide(index);
 });
 </script>
+<script src="offine-screen.js"></script>
+<script>
 
+let savedTheme=localStorage.getItem("theme")
+
+if(savedTheme){
+
+document.body.setAttribute("data-theme",savedTheme)
+
+}
+
+</script>
+<script src="site-settings.js"></script>
+<script src="cookie-consent.js"></script>
+
+<script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+<div id="cookieBanner" class="cookie-banner">
+
+<p>
+🍪 We use cookies to improve your experience.
+<a href="privacy-policy.html">Privacy Policy</a>
+</p>
+
+<div class="cookie-buttons">
+<button onclick="acceptCookies()" class="allow">Allow All</button>
+<button onclick="denyCookies()" class="deny">Deny</button>
+</div>
+
+</div>
 </body>
+
 
 </html>

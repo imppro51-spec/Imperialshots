@@ -31,11 +31,25 @@ const table = document.getElementById("bookingTable");
 const detailBox = document.getElementById("detailBox");
 const search = document.getElementById("bookingSearch");
 
+/* ===== SAFE DATE FORMAT ===== */
+function formatDate(dateValue) {
+  if (!dateValue) return "-";
+
+  // If timestamp
+  if (!isNaN(dateValue)) {
+    return new Date(Number(dateValue)).toLocaleDateString();
+  }
+
+  // If already string date
+  return dateValue;
+}
+
 /* ===== SEARCH ===== */
 search.oninput = () => {
   const q = search.value.toLowerCase();
   document.querySelectorAll("tr.data").forEach(r => {
-    r.style.display = r.innerText.toLowerCase().includes(q) ? "" : "none";
+    r.style.display =
+      r.innerText.toLowerCase().includes(q) ? "" : "none";
   });
 };
 
@@ -47,7 +61,6 @@ onValue(ref(db, "bookings"), async snap => {
 
   if (!snap.exists()) return;
 
-  // 1️⃣ Load all packages once
   const pkgSnap = await get(ref(db, "packages"));
   if (!pkgSnap.exists()) return;
 
@@ -58,15 +71,13 @@ onValue(ref(db, "bookings"), async snap => {
     const booking = child.val();
     const bookingId = child.key;
 
-    const bookingPackageName = booking.packageName;
-    if (!bookingPackageName) return;
+    if (!booking.packageName) return;
 
-    // 2️⃣ Find matching package which belongs to this vendor
     let belongsToVendor = false;
 
     Object.values(packages).forEach(pkg => {
       if (
-        pkg.name === bookingPackageName &&
+        pkg.name === booking.packageName &&
         pkg.vendorLoginId === vendorLoginId
       ) {
         belongsToVendor = true;
@@ -75,7 +86,6 @@ onValue(ref(db, "bookings"), async snap => {
 
     if (!belongsToVendor) return;
 
-    // 3️⃣ Render booking
     renderRow(bookingId, booking);
   });
 });
@@ -83,14 +93,22 @@ onValue(ref(db, "bookings"), async snap => {
 /* ===== RENDER ROW ===== */
 function renderRow(id, b) {
 
+  const totalAmount = Number(b.totalAmount || 0);
+
   let totalPaid = 0;
 
   if (b.payments) {
-    totalPaid += Object.values(b.payments)
-      .reduce((s, p) => s + (p.amount || 0), 0);
+    totalPaid = Object.values(b.payments)
+      .reduce((sum, p) =>
+        sum + Number(p.amount || 0), 0);
   }
 
-  const remaining = (b.totalAmount || 0) - totalPaid;
+  const remaining = totalAmount - totalPaid;
+
+  const isCompleted = remaining <= 0;
+
+  const eventDate =
+    b.eventDate || b.startDate || "-";
 
   const tr = document.createElement("tr");
   tr.className = "data";
@@ -99,48 +117,61 @@ function renderRow(id, b) {
     <td>${b.bookingID || id}</td>
     <td>${b.clientName || "-"}</td>
     <td>${b.clientPhone || "-"}</td>
-    <td>${b.eventDate || "-"}</td>
+    <td>${formatDate(eventDate)}</td>
     <td>${b.packageName || "-"}</td>
-    <td>₹${b.totalAmount || 0}</td>
+    <td>₹${totalAmount}</td>
     <td>₹${totalPaid}</td>
     <td>₹${remaining}</td>
-    <td class="${remaining === 0 ? "status-paid" : "status-unpaid"}">
-      ${remaining === 0 ? "Completed" : "Pending"}
+
+    <td class="${isCompleted ? "status-paid" : "status-unpaid"}">
+      ${isCompleted ? "Completed" : "Pending"}
     </td>
+
     <td><button>View</button></td>
   `;
 
-  tr.onclick = () => showDetails(id, b, totalPaid, remaining);
+  tr.onclick = () =>
+    showDetails(id, b, totalPaid, remaining);
 
   table.appendChild(tr);
 }
 
 /* ===== DETAILS ===== */
-/* ===== DETAILS ===== */
 function showDetails(id, b, paid, remaining) {
+
+  const totalAmount = Number(b.totalAmount || 0);
+  const isCompleted = remaining <= 0;
 
   let paymentHTML = "<li>No payments</li>";
 
   if (b.payments) {
     paymentHTML = Object.values(b.payments).map(p => `
       <li>
-        <b>${p.type}</b> : ₹${p.amount}
+        <b>${p.type || "-"}</b> : ₹${Number(p.amount || 0)}
         <br>
         Payment ID: ${p.paymentId || "-"}
         <br>
-        ${new Date(p.paidAt).toLocaleString()}
+        ${p.paidAt ? new Date(p.paidAt).toLocaleString() : "-"}
       </li>
     `).join("");
   }
 
+  const eventDate =
+    b.eventDate || b.startDate || "-";
+
   detailBox.innerHTML = `
     <h3>Booking Full Details</h3>
-
     <hr>
 
     <p><b>Booking ID:</b> ${b.bookingID || id}</p>
-    <p><b>Status:</b> ${b.status || "-"}</p>
-    <p><b>Created At:</b> ${b.createdAt ? new Date(b.createdAt).toLocaleString() : "-"}</p>
+    <p><b>Status:</b>
+      ${isCompleted ? "Completed" : "Pending"}
+    </p>
+    <p><b>Created At:</b>
+      ${b.createdAt
+        ? new Date(b.createdAt).toLocaleString()
+        : "-"}
+    </p>
 
     <hr>
 
@@ -152,9 +183,9 @@ function showDetails(id, b, paid, remaining) {
     <hr>
 
     <h4>Event Details</h4>
-    <p><b>Start Date:</b> ${b.startDate || "-"}</p>
-    <p><b>End Date:</b> ${b.endDate || "-"}</p>
-    <p><b>Event Date:</b> ${b.eventDate || "-"}</p>
+    <p><b>Start Date:</b> ${formatDate(b.startDate)}</p>
+    <p><b>End Date:</b> ${formatDate(b.endDate)}</p>
+    <p><b>Event Date:</b> ${formatDate(eventDate)}</p>
 
     <hr>
 
@@ -168,22 +199,24 @@ function showDetails(id, b, paid, remaining) {
 
     <h4>Package Details</h4>
     <p><b>Package:</b> ${b.packageName || "-"}</p>
-    <p><b>Total Amount:</b> ₹${b.totalAmount || 0}</p>
-    <p><b>Discount:</b> ₹${b.discount || 0}</p>
+    <p><b>Total Amount:</b> ₹${totalAmount}</p>
+    <p><b>Discount:</b> ₹${Number(b.discount || 0)}</p>
 
     <hr>
 
     <h4>Payment Structure</h4>
-    <p><b>Advance:</b> ₹${b.advanceAmount || 0}</p>
-    <p><b>Mid Payment:</b> ₹${b.midAmount || 0}</p>
-    <p><b>Final Payment:</b> ₹${b.finalAmount || 0}</p>
+    <p><b>Advance:</b> ₹${Number(b.advanceAmount || 0)}</p>
+    <p><b>Mid Payment:</b> ₹${Number(b.midAmount || 0)}</p>
+    <p><b>Final Payment:</b> ₹${Number(b.finalAmount || 0)}</p>
     <p><b>Total Paid:</b> ₹${paid}</p>
     <p><b>Remaining:</b> ₹${remaining}</p>
 
     <hr>
 
     <h4>Staff</h4>
-    <p><b>Assigned Staff:</b> ${b.assignedStaff || "Not Assigned"}</p>
+    <p><b>Assigned Staff:</b>
+      ${b.assignedStaff || "Not Assigned"}
+    </p>
 
     <hr>
 
