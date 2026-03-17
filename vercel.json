@@ -1,0 +1,16 @@
+{
+  "rewrites": [
+    { "source": "/faqs", "destination": "/faqs.html" },
+    { "source": "/packages", "destination": "/packages.html" },
+    { "source": "/portfolio", "destination": "/portfolio.html" },
+    { "source": "/media", "destination": "/media.html" },
+    { "source": "/registration", "destination": "/registration.html" }
+  ],
+  "redirects": [
+    { "source": "/faqs.html", "destination": "/faqs", "permanent": true },
+    { "source": "/packages.html", "destination": "/packages", "permanent": true },
+    { "source": "/portfolio.html", "destination": "/portfolio", "permanent": true },
+    { "source": "/media.html", "destination": "/media", "permanent": true },
+    { "source": "/registration.html", "destination": "/registration", "permanent": true }
+  ]
+}
