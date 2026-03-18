@@ -16,9 +16,16 @@ const db = firebase.database();
 // ================= LOGIN FUNCTION =================
 function vendorLogin() {
 
-  const loginId = document.getElementById("loginId").value.trim();
+  console.log("Login clicked");
+
+  const loginId = document.getElementById("loginId").value.trim().toLowerCase();
   const password = document.getElementById("password").value.trim();
   const messageBox = document.getElementById("loginMessage");
+
+  if (!messageBox) {
+    alert("loginMessage element missing ❌");
+    return;
+  }
 
   if (!loginId || !password) {
     messageBox.style.color = "red";
@@ -26,40 +33,44 @@ function vendorLogin() {
     return;
   }
 
-  db.ref("vendorCredentials/" + loginId).once("value")
+  db.ref("vendorCredentials").once("value")
     .then(snapshot => {
 
-      if (!snapshot.exists()) {
+      let found = false;
+
+      snapshot.forEach(child => {
+
+        if (child.key.toLowerCase() === loginId) {
+
+          const data = child.val();
+
+          if (data.password === password) {
+
+            found = true;
+
+            messageBox.style.color = "#22c55e";
+            messageBox.innerHTML = "Login Successful!";
+
+            localStorage.setItem("vendorLoginId", child.key);
+            localStorage.setItem("vendorName", data.name);
+
+            setTimeout(() => {
+              window.location.href = "vendor-dashboard.html";
+            }, 1000);
+          }
+
+        }
+
+      });
+
+      if (!found) {
         messageBox.style.color = "red";
-        messageBox.innerHTML = "Invalid Login ID";
-        return;
+        messageBox.innerHTML = "Invalid Login ID or Password";
       }
-
-      const data = snapshot.val();
-
-      if (data.password !== password) {
-        messageBox.style.color = "red";
-        messageBox.innerHTML = "Incorrect Password";
-        return;
-      }
-
-      // ✅ LOGIN SUCCESS
-      messageBox.style.color = "#22c55e";
-      messageBox.innerHTML = "Login Successful! Redirecting...";
-
-      // Store session
-      localStorage.setItem("vendorLoginId", loginId);
-      localStorage.setItem("vendorName", data.name);
-      localStorage.setItem("vendorPhone", data.phone);
-
-      // Redirect to Vendor Dashboard
-      setTimeout(() => {
-        window.location.href = "vendor-dashboard.html";
-      }, 1000);
 
     })
     .catch(error => {
-      messageBox.style.color = "red";
+      console.log(error);
       messageBox.innerHTML = "Error: " + error.message;
     });
 }
